@@ -1,0 +1,4040 @@
+proyecto_pep/database/proyecto_pep.db:
+tiene codigos de base de datos que no puedo copiar(SQLite format 3)
+
+proyecto_pep/static/css/style.css:
+/* Estilos generales */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    padding-bottom: 60px;
+}
+
+/* Mejoras para tarjetas */
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #e0e0e0;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para formularios */
+.form-control:focus {
+    border-color: #4dabf7;
+    box-shadow: 0 0 0 0.2rem rgba(77, 171, 247, 0.25);
+}
+
+/* Botones personalizados */
+.btn {
+    border-radius: 6px;
+    padding: 8px 20px;
+    font-weight: 500;
+}
+
+/* Tablas */
+.table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    border-top: none;
+}
+
+/* Alertas */
+.alert {
+    border-radius: 8px;
+    border: none;
+}
+
+/* Navegación */
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.4rem;
+}
+
+/* Pie de página */
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+/* Contenedor principal */
+.container {
+    max-width: 1200px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2rem;
+    }
+    
+    .card {
+        margin-bottom: 15px;
+    }
+}
+
+/* Colores personalizados */
+.bg-purple {
+    background-color: #6f42c1 !important;
+}
+
+.text-purple {
+    color: #6f42c1 !important;
+}
+
+
+/* Estilos para la sección de equipo y maquinaria */
+.bg-purple {
+    background-color: #6f42c1 !important;
+}
+
+.text-purple {
+    color: #6f42c1 !important;
+}
+
+.btn-purple {
+    background-color: #6f42c1;
+    border-color: #6f42c1;
+    color: white;
+}
+
+.btn-purple:hover {
+    background-color: #5a32a3;
+    border-color: #5a32a3;
+    color: white;
+}
+
+/* Mejoras para checkboxes y radios */
+.form-check-input:checked {
+    background-color: #6f42c1;
+    border-color: #6f42c1;
+}
+
+/* Espaciado para botones en navegación */
+.d-flex.justify-content-between .btn {
+    min-width: 200px;
+}
+
+proyecto_pep/static/js/script.js:
+(aun no hay nada copiado)
+
+proyecto_pep/templates/componentes/crud_costos.html:
+(aqui no hicimos nada, talvez porque luego actualizaste otros archivos por el bien del desarrollo del sistema)
+
+proyecto_pep/templates/componentes/crud_gastos.html:
+(aqui no hicimos nada, talvez porque luego actualizaste otros archivos por el bien del desarrollo del sistema)
+
+proyecto_pep/templates/componentes/modal_editar_costo.html:
+<div class="modal fade" id="modalEditarCosto" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">Editar Costo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST" action="{{ url_for('editar_costo', id=costo.id) }}">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nombre_costo" class="form-label">Nombre del costo:</label>
+                        <input type="text" class="form-control" id="nombre_costo" 
+                               name="nombre_costo" value="{{ costo.nombre }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="valor_costo" class="form-label">Valor:</label>
+                        <input type="number" class="form-control" id="valor_costo" 
+                               name="valor_costo" value="{{ costo.valor }}" step="0.01" min="0" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+proyecto_pep/templates/componentes/modal_editar_gasto.html:
+<div class="modal fade" id="modalEditarGasto" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title">Editar Gasto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST" action="{{ url_for('editar_gasto', id=gasto.id) }}">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nombre_gasto" class="form-label">Nombre del gasto:</label>
+                        <input type="text" class="form-control" id="nombre_gasto" 
+                               name="nombre_gasto" value="{{ gasto.nombre }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="valor_gasto" class="form-label">Valor:</label>
+                        <input type="number" class="form-control" id="valor_gasto" 
+                               name="valor_gasto" value="{{ gasto.valor }}" step="0.01" min="0" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-warning">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+proyecto_pep/templates/componentes/modal_editar_material.html:
+<div class="modal fade" id="modalEditarMaterial" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title">Editar Material</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST" action="{{ url_for('editar_material', id=material.id) }}">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nombre_material" class="form-label">Nombre del material:</label>
+                        <input type="text" class="form-control" id="nombre_material" 
+                               name="nombre_material" value="{{ material.nombre }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="valor_material" class="form-label">Valor:</label>
+                        <input type="number" class="form-control" id="valor_material" 
+                               name="valor_material" value="{{ material.valor }}" step="0.01" min="0" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-info">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+proyecto_pep/templates/componentes/modal_editar_personal.html
+<div class="modal fade" id="modalEditarPersonal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title">Editar Personal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST" action="{{ url_for('editar_personal', id=persona.id) }}">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nombre_personal" class="form-label">Nombre:</label>
+                        <input type="text" class="form-control" id="nombre_personal" 
+                               name="nombre_personal" value="{{ persona.nombre }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="perfil_personal" class="form-label">Perfil:</label>
+                        <textarea class="form-control" id="perfil_personal" 
+                                  name="perfil_personal" rows="3">{{ persona.perfil }}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="salario_mensual" class="form-label">Salario Mensual:</label>
+                        <input type="number" class="form-control" id="salario_mensual" 
+                               name="salario_mensual" value="{{ persona.salario_mensual }}" step="0.01" min="0" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-warning">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+proyecto_pep/templates/componentes/tabla_flujo.html:
+(aqui no hicimos nada, talvez porque luego actualizaste otros archivos por el bien del desarrollo del sistema)
+
+proyecto_pep/templates/proyecto/datos_iniciales.html:
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-10 mx-auto">
+        <!-- Encabezado -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">📋 PRIMERA FASE: Datos Iniciales</h2>
+            {% if proyecto %}
+            <span class="badge bg-success">Proyecto: {{ proyecto.nombre }}</span>
+            {% endif %}
+        </div>
+        
+        <!-- Información del Excel -->
+        <div class="alert alert-info mb-4">
+            <h5 class="alert-heading">ℹ️ Como en tu Excel:</h5>
+            <p class="mb-0">Esta sección corresponde a la <strong>"PRIMERA FASE: Datos iniciales"</strong> de tu archivo Excel. 
+            Aquí configuras los datos básicos del proyecto que se usarán en todas las fases siguientes.</p>
+        </div>
+
+        <!-- Formulario -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Datos del Proyecto</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('datos_iniciales') }}">
+                    
+                    <!-- Fila 1: Nombre del proyecto -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="nombre" class="form-label">
+                                    <strong>nombre del proyecto:</strong>
+                                </label>
+                                <input type="text" class="form-control form-control-lg" 
+                                       id="nombre" name="nombre" 
+                                       value="{{ proyecto.nombre if proyecto else '' }}"
+                                       placeholder="Ej: empresa de prueba" required>
+                                <div class="form-text">
+                                    <small>se ingresara nombre del proyecto</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <!-- Espacio en blanco para mantener estructura como Excel -->
+                        </div>
+                    </div>
+
+                    <!-- Fila 2: Tipo de actividad -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="tipo_actividad" class="form-label">
+                                    <strong>tipo de actividad:</strong>
+                                </label>
+                                <input type="text" class="form-control form-control-lg" 
+                                       id="tipo_actividad" name="tipo_actividad" 
+                                       value="{{ proyecto.tipo_actividad if proyecto else '' }}"
+                                       placeholder="Ej: venta de articulos" required>
+                                <div class="form-text">
+                                    <small>una descripcion pequeña sobre el proyecto</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fila 3: Inversión inicial -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    <strong>inversion inicial:</strong>
+                                </label>
+                                <div class="d-flex align-items-center">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" 
+                                               name="tiene_inversion" id="inversion_si" 
+                                               value="si" 
+                                               {% if proyecto and proyecto.tiene_inversion == 1 %}checked{% endif %}>
+                                        <label class="form-check-label" for="inversion_si">si</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" 
+                                               name="tiene_inversion" id="inversion_no" 
+                                               value="no" 
+                                               {% if not proyecto or proyecto.tiene_inversion == 0 %}checked{% endif %}>
+                                        <label class="form-check-label" for="inversion_no">no</label>
+                                    </div>
+                                </div>
+                                <div class="form-text">
+                                    <small>aquí habrá un checkbox donde se elegirá si tiene o no inversión inicial</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3" id="campo_valor_inversion" 
+                                 style="display: {% if proyecto and proyecto.tiene_inversion == 1 %}block{% else %}none{% endif %};">
+                                <label for="valor_inversion" class="form-label">
+                                    <strong>valor de la inversión inicial:</strong>
+                                </label>
+                                <input type="number" class="form-control" 
+                                       id="valor_inversion" name="valor_inversion" 
+                                       value="{{ proyecto.valor_inversion if proyecto else 0 }}"
+                                       step="0.01" min="0">
+                                <div class="form-text">
+                                    <small>si tiene inversión inicial aparecerá esta opción</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fila 4: Tasa de descuento -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="tasa_descuento" class="form-label">
+                                    <strong>tasas de descuento:</strong>
+                                </label>
+                                <input type="number" class="form-control form-control-lg" 
+                                       id="tasa_descuento" name="tasa_descuento" 
+                                       value="{{ proyecto.tasa_descuento if proyecto else 0.001 }}"
+                                       step="0.001" min="0" max="1" required>
+                                <div class="form-text">
+                                    <small>aquí ingresaremos la tasa en porcentaje (ej: 0.001 = 0.1%)</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fila 5: Nombre del producto -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="nombre_producto" class="form-label">
+                                    <strong>nombre del producto:</strong>
+                                </label>
+                                <input type="text" class="form-control form-control-lg" 
+                                       id="nombre_producto" name="nombre_producto" 
+                                       value="{{ proyecto.nombre_producto if proyecto else '' }}"
+                                       placeholder="Ej: PC gamer" required>
+                                <div class="form-text">
+                                    <small>aquí el nombre del producto que evaluaremos</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fila 6: Precio del producto -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="precio_producto" class="form-label">
+                                    <strong>Precio del producto:</strong>
+                                </label>
+                                <input type="number" class="form-control form-control-lg" 
+                                       id="precio_producto" name="precio_producto" 
+                                       value="{{ proyecto.precio_producto if proyecto else 2000 }}"
+                                       step="0.01" min="0" required>
+                                <div class="form-text">
+                                    <small>aquí su precio del producto que evaluaremos</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botones -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+                            ← Volver al Inicio
+                        </a>
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            {% if proyecto %}Actualizar Proyecto{% else %}Crear Proyecto{% endif %}
+                        </button>
+                        <a href="{{ url_for('viabilidad_tecnica') }}" class="btn btn-success">
+                            Siguiente: Viabilidad Técnica →
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Resumen si hay proyecto -->
+        {% if proyecto %}
+        <div class="card mt-4 shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">📊 Resumen del Proyecto</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>PROYECTO:</th>
+                                <td>{{ proyecto.nombre }}</td>
+                            </tr>
+                            <tr>
+                                <th>Actividad:</th>
+                                <td>{{ proyecto.tipo_actividad }}</td>
+                            </tr>
+                            <tr>
+                                <th>Inversión:</th>
+                                <td>{{ 'Sí' if proyecto.tiene_inversion == 1 else 'No' }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Tasa:</th>
+                                <td>{{ (proyecto.tasa_descuento * 100)|round(3) }}%</td>
+                            </tr>
+                            <tr>
+                                <th>Producto:</th>
+                                <td>{{ proyecto.nombre_producto }}</td>
+                            </tr>
+                            <tr>
+                                <th>Precio:</th>
+                                <td>$ {{ proyecto.precio_producto|round(2) }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Mostrar/ocultar campo de valor de inversión
+    document.querySelectorAll('input[name="tiene_inversion"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            const campoValor = document.getElementById('campo_valor_inversion');
+            campoValor.style.display = this.value === 'si' ? 'block' : 'none';
+            
+            // Si selecciona "no", establecer valor a 0
+            if (this.value === 'no') {
+                document.getElementById('valor_inversion').value = 0;
+            }
+        });
+    });
+
+    // Formatear tasa como porcentaje al perder foco
+    document.getElementById('tasa_descuento').addEventListener('blur', function() {
+        let valor = parseFloat(this.value);
+        if (!isNaN(valor)) {
+            this.value = valor.toFixed(4); // 4 decimales como en Excel
+        }
+    });
+
+    // Formatear precio al perder foco
+    document.getElementById('precio_producto').addEventListener('blur', function() {
+        let valor = parseFloat(this.value);
+        if (!isNaN(valor)) {
+            this.value = valor.toFixed(2); // 2 decimales
+        }
+    });
+</script>
+{% endblock %}
+
+proyecto_pep/templates/proyecto/equipo_maquinaria.html:
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <!-- Encabezado -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">🔩 Equipo y Maquinaria</h2>
+            {% if proyecto %}
+            <div>
+                <span class="badge bg-primary">Proyecto: {{ proyecto.nombre }}</span>
+                <span class="badge bg-info">INVERSIÓN</span>
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Información del Excel -->
+        <div class="alert alert-info mb-4">
+            <h5 class="alert-heading">ℹ️ Como en tu Excel:</h5>
+            <p class="mb-0">Esta sección corresponde a la parte de <strong>"Equipo y maquinaria"</strong> de tu archivo Excel. 
+            Aquí gestionas los materiales, equipos e inversiones necesarias para el proyecto.</p>
+        </div>
+
+        <!-- Advertencia si no hay proyecto -->
+        {% if not proyecto %}
+        <div class="alert alert-warning">
+            <h5>⚠️ Primero debes crear un proyecto</h5>
+            <p>Para gestionar materiales, primero necesitas crear un proyecto en la sección "Datos Iniciales".</p>
+            <a href="{{ url_for('datos_iniciales') }}" class="btn btn-warning">Ir a Datos Iniciales →</a>
+        </div>
+        {% else %}
+        
+        <!-- Formulario para agregar material -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">INVERSION</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('agregar_material') }}">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="nombre_material" class="form-label">
+                                <strong>nombre del material</strong>
+                            </label>
+                            <input type="text" class="form-control" id="nombre_material" 
+                                   name="nombre_material" placeholder="Ej: letrero grande" required>
+                            <div class="form-text">
+                                <small>Nombre del equipo, maquinaria o material</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="valor_material" class="form-label">
+                                <strong>precio del costo:</strong>
+                            </label>
+                            <input type="number" class="form-control" id="valor_material" 
+                                   name="valor_material" step="0.01" min="0" required>
+                            <div class="form-text">
+                                <small>Valor de la inversión en $</small>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-info w-100">
+                                ➕ añadir material
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tabla de materiales -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">Lista de Materiales</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th width="50">Nro</th>
+                                <th>Lista de materiales</th>
+                                <th width="120">Valor</th>
+                                <th width="150" class="text-center">opcion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for material in materiales %}
+                            <tr>
+                                <td class="text-center">{{ loop.index }}</td>
+                                <td>{{ material.nombre }}</td>
+                                <td class="text-end">$ {{ material.valor|round(2) }}</td>
+                                <td class="text-center">
+                                    <!-- Botón para editar (abrirá modal) -->
+                                    <button type="button" class="btn btn-sm btn-outline-info" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#modalEditarMaterial{{ material.id }}">
+                                        Editar
+                                    </button>
+                                    <a href="{{ url_for('eliminar_material', id=material.id) }}" 
+                                       class="btn btn-sm btn-outline-danger"
+                                       onclick="return confirm('¿Seguro que quieres eliminar este material?')">
+                                        Eliminar
+                                    </a>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="4" class="text-center text-muted">
+                                    No hay materiales registrados. Agrega tu primer material o equipo.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot class="table-secondary">
+                            <tr>
+                                <td colspan="2" class="text-end"><strong>TOTAL materiales:</strong></td>
+                                <td class="text-end"><strong>$ {{ total_materiales|round(2) }}</strong></td>
+                                <td class="text-center">
+                                    <small>Nro materiales: {{ materiales|length }}</small>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resumen completo -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0">📊 DATOS PREVIOS - Resumen Completo</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <!-- Datos del proyecto -->
+                    <div class="col-md-4">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>PROYECTO:</th>
+                                <td>{{ proyecto.nombre }}</td>
+                            </tr>
+                            <tr>
+                                <th>Actividad:</th>
+                                <td>{{ proyecto.tipo_actividad }}</td>
+                            </tr>
+                            <tr>
+                                <th>Inversión:</th>
+                                <td>{{ 'Sí' if proyecto.tiene_inversion == 1 else 'No' }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-4">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Tasa:</th>
+                                <td>{{ (proyecto.tasa_descuento * 100)|round(3) }}%</td>
+                            </tr>
+                            <tr>
+                                <th>Producto:</th>
+                                <td>{{ proyecto.nombre_producto }}</td>
+                            </tr>
+                            <tr>
+                                <th>Precio:</th>
+                                <td>$ {{ proyecto.precio_producto|round(2) }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <!-- Totales acumulados -->
+                    <div class="col-md-4">
+                        <div class="card bg-light h-100">
+                            <div class="card-body">
+                                <h6 class="card-title text-center mb-3">TOTALES ACUMULADOS</h6>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Costos:</span>
+                                    <strong class="text-success">$ {{ total_costos|round(2) }}</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Gastos:</span>
+                                    <strong class="text-warning">$ {{ total_gastos|round(2) }}</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Salarios:</span>
+                                    <strong class="text-danger">$ {{ total_salarios|round(2) }}</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Materiales:</span>
+                                    <strong class="text-info">$ {{ total_materiales|round(2) }}</strong>
+                                </div>
+                                <hr>
+                                <div class="d-flex justify-content-between">
+                                    <strong>Total General:</strong>
+                                    <strong>$ {{ (total_costos + total_gastos + total_salarios + total_materiales)|round(2) }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Selector de flujo (como en tu Excel) -->
+        <div class="card shadow-sm mt-4">
+            <div class="card-header bg-purple text-white">
+                <h5 class="mb-0">⏰ Configuración de Flujos</h5>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-light mb-4">
+                    <p class="mb-0">
+                        <strong>⚠️ Nota:</strong> Estos parámetros serán como un check box, según lo que se elija mostrará su respectivo flujo.
+                    </p>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="form-label"><strong>elegir opcion:</strong></label>
+                        <div class="d-flex flex-wrap gap-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="tipo_flujo" 
+                                       id="flujo_dias" value="dias" checked>
+                                <label class="form-check-label" for="flujo_dias">
+                                    flujo por dias
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="tipo_flujo" 
+                                       id="flujo_semanas" value="semanas">
+                                <label class="form-check-label" for="flujo_semanas">
+                                    flujo por semanas
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="tipo_flujo" 
+                                       id="flujo_meses" value="meses">
+                                <label class="form-check-label" for="flujo_meses">
+                                    flujo por meses
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="tipo_flujo" 
+                                       id="flujo_anos" value="anos">
+                                <label class="form-check-label" for="flujo_anos">
+                                    flujo por años
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botones de navegación -->
+        <div class="d-flex justify-content-between mt-4">
+            <div>
+                <a href="{{ url_for('viabilidad_operativa') }}" class="btn btn-outline-secondary">
+                    ← volver: Viabilidad operativa
+                </a>
+            </div>
+            <div>
+                <a href="{{ url_for('flujos_caja') }}" class="btn btn-primary">
+                    Siguiente: Flujos de caja →
+                </a>
+            </div>
+        </div>
+        
+        {% endif %} <!-- Fin del if proyecto -->
+    </div>
+</div>
+
+<!-- Modales para editar materiales -->
+{% for material in materiales %}
+<div class="modal fade" id="modalEditarMaterial{{ material.id }}" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title">Editar Material</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST" action="{{ url_for('editar_material', id=material.id) }}">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nombre_material_{{ material.id }}" class="form-label">Nombre del material:</label>
+                        <input type="text" class="form-control" id="nombre_material_{{ material.id }}" 
+                               name="nombre_material" value="{{ material.nombre }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="valor_material_{{ material.id }}" class="form-label">Valor:</label>
+                        <input type="number" class="form-control" id="valor_material_{{ material.id }}" 
+                               name="valor_material" value="{{ material.valor }}" step="0.01" min="0" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-info">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
+
+{% block scripts %}
+<style>
+    .bg-purple {
+        background-color: #6f42c1 !important;
+    }
+</style>
+<script>
+    // Formatear valores al perder foco
+    document.querySelectorAll('input[name="valor_material"]').forEach(input => {
+        input.addEventListener('blur', function() {
+            let valor = parseFloat(this.value);
+            if (!isNaN(valor)) {
+                this.value = valor.toFixed(2); // 2 decimales
+            }
+        });
+    });
+
+    // Guardar selección de tipo de flujo
+    document.querySelectorAll('input[name="tipo_flujo"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            localStorage.setItem('tipo_flujo_seleccionado', this.value);
+        });
+    });
+
+    // Cargar selección guardada
+    window.addEventListener('DOMContentLoaded', function() {
+        const tipoGuardado = localStorage.getItem('tipo_flujo_seleccionado');
+        if (tipoGuardado) {
+            document.getElementById('flujo_' + tipoGuardado).checked = true;
+        }
+    });
+</script>
+{% endblock %}
+
+proyecto_pep/templates/proyecto/flujos_caja.html:
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <!-- Encabezado -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">💰 Flujos de Caja</h2>
+            {% if proyecto %}
+            <div>
+                <span class="badge bg-primary">Proyecto: {{ proyecto.nombre }}</span>
+                <span class="badge bg-success">Producto: {{ proyecto.nombre_producto }}</span>
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Información del Excel -->
+        <div class="alert alert-info mb-4">
+            <h5 class="alert-heading">ℹ️ Como en tu Excel:</h5>
+            <p class="mb-0">Esta sección corresponde a la parte de <strong>"Flujos de caja"</strong> de tu archivo Excel. 
+            Aquí defines las ventas por periodo y se calculan automáticamente los ingresos, costos, gastos, egresos y utilidad bruta.</p>
+        </div>
+
+        <!-- Advertencia si no hay proyecto -->
+        {% if not proyecto %}
+        <div class="alert alert-warning">
+            <h5>⚠️ Primero debes crear un proyecto</h5>
+            <p>Para configurar flujos de caja, primero necesitas crear un proyecto en la sección "Datos Iniciales".</p>
+            <a href="{{ url_for('datos_iniciales') }}" class="btn btn-warning">Ir a Datos Iniciales →</a>
+        </div>
+        {% else %}
+        
+        <!-- Selector de tipo de flujo -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-purple text-white">
+                <h5 class="mb-0">⏰ Elegir Periodo de Análisis</h5>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-light mb-4">
+                    <p class="mb-0">
+                        <strong>⚠️ Nota:</strong> Estos flujos de abajo cambiarán según el tipo de flujo escogido anteriormente.
+                    </p>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="form-label"><strong>elegir opcion:</strong></label>
+                        <div class="d-flex flex-wrap gap-3 mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="tipo_flujo" 
+                                       id="flujo_dias" value="dias" 
+                                       onclick="mostrarFlujo('dias')" 
+                                       {% if request.args.get('tipo') != 'semanas' and request.args.get('tipo') != 'meses' and request.args.get('tipo') != 'anos' %}checked{% endif %}>
+                                <label class="form-check-label" for="flujo_dias">
+                                    flujo por dias
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="tipo_flujo" 
+                                       id="flujo_semanas" value="semanas" 
+                                       onclick="mostrarFlujo('semanas')"
+                                       {% if request.args.get('tipo') == 'semanas' %}checked{% endif %}>
+                                <label class="form-check-label" for="flujo_semanas">
+                                    flujo por semanas
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="tipo_flujo" 
+                                       id="flujo_meses" value="meses" 
+                                       onclick="mostrarFlujo('meses')"
+                                       {% if request.args.get('tipo') == 'meses' %}checked{% endif %}>
+                                <label class="form-check-label" for="flujo_meses">
+                                    flujo por meses
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="tipo_flujo" 
+                                       id="flujo_anos" value="anos" 
+                                       onclick="mostrarFlujo('anos')"
+                                       {% if request.args.get('tipo') == 'anos' %}checked{% endif %}>
+                                <label class="form-check-label" for="flujo_anos">
+                                    flujo por años
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resumen de datos previos -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0">📊 DATOS PREVIOS</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <!-- Datos del proyecto -->
+                    <div class="col-md-4">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>PROYECTO:</th>
+                                <td>{{ proyecto.nombre }}</td>
+                            </tr>
+                            <tr>
+                                <th>Actividad:</th>
+                                <td>{{ proyecto.tipo_actividad }}</td>
+                            </tr>
+                            <tr>
+                                <th>Inversión:</th>
+                                <td>{{ 'Sí' if proyecto.tiene_inversion == 1 else 'No' }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-4">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Tasa:</th>
+                                <td>{{ (proyecto.tasa_descuento * 100)|round(3) }}%</td>
+                            </tr>
+                            <tr>
+                                <th>Producto:</th>
+                                <td>{{ proyecto.nombre_producto }}</td>
+                            </tr>
+                            <tr>
+                                <th>Precio:</th>
+                                <td>$ {{ proyecto.precio_producto|round(2) }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <!-- Totales acumulados -->
+                    <div class="col-md-4">
+                        <div class="card bg-light h-100">
+                            <div class="card-body">
+                                <h6 class="card-title text-center mb-3">TOTALES ACUMULADOS</h6>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Costos:</span>
+                                    <strong class="text-success">$ {{ totales.costos|round(2) }}</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Gastos:</span>
+                                    <strong class="text-warning">$ {{ totales.gastos|round(2) }}</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Salarios:</span>
+                                    <strong class="text-danger">$ {{ totales.salarios|round(2) }}</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Materiales:</span>
+                                    <strong class="text-info">$ {{ totales.materiales|round(2) }}</strong>
+                                </div>
+                                <hr>
+                                <div class="d-flex justify-content-between">
+                                    <strong>Total General:</strong>
+                                    <strong>$ {{ (totales.costos + totales.gastos + totales.salarios + totales.materiales)|round(2) }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== FLUJO POR DÍAS (mostrado por defecto) ========== -->
+        <div id="flujo_dias_container" class="flujo-container">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">📅 Flujo por Días</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('guardar_ventas_dias') }}">
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>flujo por dias</th>
+                                        <th>lunes</th>
+                                        <th>martes</th>
+                                        <th>miércoles</th>
+                                        <th>jueves</th>
+                                        <th>viernes</th>
+                                        <th>sábado</th>
+                                        <th>domingo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="table-secondary"><strong>Nro de productos vendidos</strong></td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="lunes" value="{{ ventas_dias.lunes if ventas_dias else 4 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="martes" value="{{ ventas_dias.martes if ventas_dias else 3 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="miercoles" value="{{ ventas_dias.miercoles if ventas_dias else 2 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="jueves" value="{{ ventas_dias.jueves if ventas_dias else 4 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="viernes" value="{{ ventas_dias.viernes if ventas_dias else 6 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="sabado" value="{{ ventas_dias.sabado if ventas_dias else 10 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="domingo" value="{{ ventas_dias.domingo if ventas_dias else 4 }}" min="0">
+                                        </td>
+                                    </tr>
+                                    
+                                    <!-- Cálculos automáticos -->
+                                    {% if ventas_dias %}
+                                    <tr class="table-success">
+                                        <td><strong>Ingresos</strong></td>
+                                        <td>$ {{ (ventas_dias.lunes * proyecto.precio_producto)|round(2) }}</td>
+                                        <td>$ {{ (ventas_dias.martes * proyecto.precio_producto)|round(2) }}</td>
+                                        <td>$ {{ (ventas_dias.miercoles * proyecto.precio_producto)|round(2) }}</td>
+                                        <td>$ {{ (ventas_dias.jueves * proyecto.precio_producto)|round(2) }}</td>
+                                        <td>$ {{ (ventas_dias.viernes * proyecto.precio_producto)|round(2) }}</td>
+                                        <td>$ {{ (ventas_dias.sabado * proyecto.precio_producto)|round(2) }}</td>
+                                        <td>$ {{ (ventas_dias.domingo * proyecto.precio_producto)|round(2) }}</td>
+                                    </tr>
+                                    <tr class="table-danger">
+                                        <td><strong>Costos</strong></td>
+                                        {% for i in range(7) %}
+                                        <td>$ {{ (totales.costos / 30)|round(2) }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    <tr class="table-warning">
+                                        <td><strong>Gastos</strong></td>
+                                        {% for i in range(7) %}
+                                        <td>$ {{ (totales.gastos / 30)|round(2) }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    <tr class="table-danger">
+                                        <td><strong>Egresos</strong></td>
+                                        {% for i in range(7) %}
+                                        <td>$ {{ ((totales.costos + totales.gastos) / 30)|round(2) }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    <tr class="table-info">
+                                        <td><strong>utilidad bruta</strong></td>
+                                        {% set ingresos_semana = [
+                                            ventas_dias.lunes * proyecto.precio_producto,
+                                            ventas_dias.martes * proyecto.precio_producto,
+                                            ventas_dias.miercoles * proyecto.precio_producto,
+                                            ventas_dias.jueves * proyecto.precio_producto,
+                                            ventas_dias.viernes * proyecto.precio_producto,
+                                            ventas_dias.sabado * proyecto.precio_producto,
+                                            ventas_dias.domingo * proyecto.precio_producto
+                                        ] %}
+                                        {% for i in range(7) %}
+                                        <td>$ {{ (ingresos_semana[i] - ((totales.costos + totales.gastos) / 30))|round(2) }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="mt-3 text-center">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                💾 Guardar Ventas por Día
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== FLUJO POR SEMANAS ========== -->
+        <div id="flujo_semanas_container" class="flujo-container" style="display: none;">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">📅 Flujo por Semanas</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('guardar_ventas_semanas') }}">
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>flujo por semanas</th>
+                                        <th>semana 1</th>
+                                        <th>semana 2</th>
+                                        <th>semana 3</th>
+                                        <th>semana 4</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="table-secondary"><strong>Nro de productos vendidos</strong></td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="semana1" value="{{ ventas_semanas.semana1 if ventas_semanas else 20 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="semana2" value="{{ ventas_semanas.semana2 if ventas_semanas else 14 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="semana3" value="{{ ventas_semanas.semana3 if ventas_semanas else 15 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="semana4" value="{{ ventas_semanas.semana4 if ventas_semanas else 12 }}" min="0">
+                                        </td>
+                                    </tr>
+                                    
+                                    <!-- Cálculos automáticos -->
+                                    {% if ventas_semanas %}
+                                    <tr class="table-success">
+                                        <td><strong>Ingresos</strong></td>
+                                        <td>$ {{ (ventas_semanas.semana1 * proyecto.precio_producto)|round(2) }}</td>
+                                        <td>$ {{ (ventas_semanas.semana2 * proyecto.precio_producto)|round(2) }}</td>
+                                        <td>$ {{ (ventas_semanas.semana3 * proyecto.precio_producto)|round(2) }}</td>
+                                        <td>$ {{ (ventas_semanas.semana4 * proyecto.precio_producto)|round(2) }}</td>
+                                    </tr>
+                                    <tr class="table-info">
+                                        <td><strong>utilidad bruta</strong></td>
+                                        {% set ingresos_semanas = [
+                                            ventas_semanas.semana1 * proyecto.precio_producto,
+                                            ventas_semanas.semana2 * proyecto.precio_producto,
+                                            ventas_semanas.semana3 * proyecto.precio_producto,
+                                            ventas_semanas.semana4 * proyecto.precio_producto
+                                        ] %}
+                                        {% for i in range(4) %}
+                                        <td>$ {{ (ingresos_semanas[i] - (totales.costos + totales.gastos) / 4)|round(2) }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="mt-3 text-center">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                💾 Guardar Ventas por Semana
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== FLUJO POR MESES ========== -->
+        <div id="flujo_meses_container" class="flujo-container" style="display: none;">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0">📅 Flujo por Meses (Enero - Julio)</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('guardar_ventas_meses') }}">
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>flujo por meses</th>
+                                        <th>enero</th>
+                                        <th>febrero</th>
+                                        <th>marzo</th>
+                                        <th>abril</th>
+                                        <th>mayo</th>
+                                        <th>junio</th>
+                                        <th>julio</th>
+                                        <th>ajustar: ene-jul</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="table-secondary"><strong>Nro de productos vendidos</strong></td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="enero" value="{{ ventas_meses.enero if ventas_meses else 0 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="febrero" value="{{ ventas_meses.febrero if ventas_meses else 0 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="marzo" value="{{ ventas_meses.marzo if ventas_meses else 0 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="abril" value="{{ ventas_meses.abril if ventas_meses else 0 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="mayo" value="{{ ventas_meses.mayo if ventas_meses else 0 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="junio" value="{{ ventas_meses.junio if ventas_meses else 0 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="julio" value="{{ ventas_meses.julio if ventas_meses else 0 }}" min="0">
+                                        </td>
+                                        <td class="table-info">
+                                            <small>Ajustar rango</small>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="mt-3 text-center">
+                            <button type="submit" class="btn btn-warning btn-lg">
+                                💾 Guardar Ventas por Mes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== FLUJO POR AÑOS ========== -->
+        <div id="flujo_anos_container" class="flujo-container" style="display: none;">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">📅 Flujo por Años</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('guardar_ventas_anos') }}">
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>flujo por años</th>
+                                        <th>año 1</th>
+                                        <th>año 2</th>
+                                        <th>año 3</th>
+                                        <th>año 4</th>
+                                        <th>año 5</th>
+                                        <th>año 6</th>
+                                        <th>año 7</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="table-secondary"><strong>Nro de productos vendidos</strong></td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="año1" value="{{ ventas_anos.año1 if ventas_anos else 0 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="año2" value="{{ ventas_anos.año2 if ventas_anos else 0 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="año3" value="{{ ventas_anos.año3 if ventas_anos else 0 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="año4" value="{{ ventas_anos.año4 if ventas_anos else 0 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="año5" value="{{ ventas_anos.año5 if ventas_anos else 0 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="año6" value="{{ ventas_anos.año6 if ventas_anos else 0 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="año7" value="{{ ventas_anos.año7 if ventas_anos else 0 }}" min="0">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="mt-3 text-center">
+                            <button type="submit" class="btn btn-info btn-lg">
+                                💾 Guardar Ventas por Año
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botones de navegación -->
+        <div class="d-flex justify-content-between mt-4">
+            <div>
+                <a href="{{ url_for('equipo_maquinaria') }}" class="btn btn-outline-secondary">
+                    ← Volver a materiales y flujos
+                </a>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="{{ url_for('calculos_financieros') }}" class="btn btn-primary">
+                    Ver más cálculos
+                </a>
+                <a href="{{ url_for('calculos_financieros') }}" class="btn btn-success">
+                    Siguiente: Resultados Financieros →
+                </a>
+            </div>
+        </div>
+        
+        {% endif %} <!-- Fin del if proyecto -->
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<style>
+    .bg-purple {
+        background-color: #6f42c1 !important;
+    }
+    
+    .flujo-container {
+        transition: all 0.3s ease;
+    }
+    
+    .form-control.text-center {
+        text-align: center;
+    }
+    
+    /* Colores de tablas como en Excel */
+    .table-success {
+        background-color: #d1e7dd !important;
+    }
+    
+    .table-danger {
+        background-color: #f8d7da !important;
+    }
+    
+    .table-warning {
+        background-color: #fff3cd !important;
+    }
+    
+    .table-info {
+        background-color: #cff4fc !important;
+    }
+</style>
+
+<script>
+    // Función para mostrar/ocultar flujos según selección
+    function mostrarFlujo(tipo) {
+        // Ocultar todos los contenedores
+        document.querySelectorAll('.flujo-container').forEach(container => {
+            container.style.display = 'none';
+        });
+        
+        // Mostrar el contenedor seleccionado
+        document.getElementById('flujo_' + tipo + '_container').style.display = 'block';
+        
+        // Guardar selección en localStorage
+        localStorage.setItem('tipo_flujo_seleccionado', tipo);
+        
+        // Actualizar URL sin recargar la página
+        const url = new URL(window.location);
+        url.searchParams.set('tipo', tipo);
+        window.history.replaceState({}, '', url);
+    }
+    
+    // Cargar selección guardada al cargar la página
+    document.addEventListener('DOMContentLoaded', function() {
+        // Verificar si hay tipo en URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const tipoURL = urlParams.get('tipo');
+        
+        // Verificar localStorage
+        const tipoGuardado = localStorage.getItem('tipo_flujo_seleccionado');
+        
+        // Determinar qué tipo mostrar
+        let tipoAMostrar = 'dias'; // Por defecto
+        
+        if (tipoURL) {
+            tipoAMostrar = tipoURL;
+        } else if (tipoGuardado) {
+            tipoAMostrar = tipoGuardado;
+        }
+        
+        // Marcar el radio button correspondiente
+        document.getElementById('flujo_' + tipoAMostrar).checked = true;
+        
+        // Mostrar el flujo correspondiente
+        mostrarFlujo(tipoAMostrar);
+        
+        // Agregar eventos a los inputs para calcular automáticamente
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            input.addEventListener('input', function() {
+                calcularTotales(this);
+            });
+        });
+    });
+    
+    // Función para calcular totales (puedes expandir esto)
+    function calcularTotales(inputElement) {
+        // Aquí puedes agregar lógica para cálculos en tiempo real
+        console.log('Valor cambiado:', inputElement.value);
+        
+        // Ejemplo: Calcular total semanal si es flujo por días
+        if (inputElement.name.includes('lunes') || 
+            inputElement.name.includes('martes') || 
+            inputElement.name.includes('miercoles') || 
+            inputElement.name.includes('jueves') || 
+            inputElement.name.includes('viernes') || 
+            inputElement.name.includes('sabado') || 
+            inputElement.name.includes('domingo')) {
+            
+            // Podrías calcular el total semanal aquí
+        }
+    }
+    
+    // Función para calcular ingresos automáticamente
+    function calcularIngresos() {
+        const precioProducto = {{ proyecto.precio_producto if proyecto else 0 }};
+        
+        // Para flujo por días
+        document.querySelectorAll('#flujo_dias_container input[type="number"]').forEach(input => {
+            const valor = parseInt(input.value) || 0;
+            // Aquí podrías mostrar el cálculo en tiempo real
+        });
+    }
+</script>
+{% endblock %}
+
+proyecto_pep/templates/proyecto/viabilidad_operativa.html:
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <!-- Encabezado -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">👥 TERCERA FASE: Viabilidad Operativa</h2>
+            {% if proyecto %}
+            <div>
+                <span class="badge bg-primary">Proyecto: {{ proyecto.nombre }}</span>
+                <span class="badge bg-warning">Opcional</span>
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Información del Excel -->
+        <div class="alert alert-info mb-4">
+            <h5 class="alert-heading">ℹ️ Como en tu Excel:</h5>
+            <p class="mb-0">Esta sección corresponde a la <strong>"TERCERA FASE: Viabilidad Operativa (opcional)"</strong> de tu archivo Excel. 
+            Aquí gestionas el personal necesario para el proyecto, sus perfiles y salarios mensuales.</p>
+        </div>
+
+        <!-- Advertencia si no hay proyecto -->
+        {% if not proyecto %}
+        <div class="alert alert-warning">
+            <h5>⚠️ Primero debes crear un proyecto</h5>
+            <p>Para gestionar personal, primero necesitas crear un proyecto en la sección "Datos Iniciales".</p>
+            <a href="{{ url_for('datos_iniciales') }}" class="btn btn-warning">Ir a Datos Iniciales →</a>
+        </div>
+        {% else %}
+        
+        <!-- Formulario para agregar personal -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0">PERSONAL y perfil</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('agregar_personal') }}">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label for="nombre_personal" class="form-label">
+                                <strong>PERSONAL</strong>
+                            </label>
+                            <input type="text" class="form-control" id="nombre_personal" 
+                                   name="nombre_personal" placeholder="Ej: Técnico Superior hardware" required>
+                            <div class="form-text">
+                                <small>Nombre del miembro del personal</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="perfil_personal" class="form-label">
+                                <strong>PERFIL:</strong>
+                            </label>
+                            <textarea class="form-control" id="perfil_personal" 
+                                      name="perfil_personal" rows="2" 
+                                      placeholder="(descripcion larga)"></textarea>
+                            <div class="form-text">
+                                <small>Descripción del perfil y responsabilidades</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="salario_mensual" class="form-label">
+                                <strong>SALARIO por MES:</strong>
+                            </label>
+                            <input type="number" class="form-control" id="salario_mensual" 
+                                   name="salario_mensual" step="0.01" min="0" required>
+                            <div class="form-text">
+                                <small>Salario mensual en $</small>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-warning w-100">
+                                ➕ añadir personal
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tabla de personal -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">Lista de Personal</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th width="50">Nro</th>
+                                <th>Lista de Personal</th>
+                                <th>lista de perfil</th>
+                                <th width="120">Salario por MES</th>
+                                <th width="150" class="text-center">opcion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for persona in personal %}
+                            <tr>
+                                <td class="text-center">{{ loop.index }}</td>
+                                <td>{{ persona.nombre }}</td>
+                                <td>
+                                    {% if persona.perfil %}
+                                    <small>{{ persona.perfil }}</small>
+                                    {% else %}
+                                    <span class="text-muted">Sin descripción</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-end">$ {{ persona.salario_mensual|round(2) }}</td>
+                                <td class="text-center">
+                                    <!-- Botón para editar (abrirá modal) -->
+                                    <button type="button" class="btn btn-sm btn-outline-warning" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#modalEditarPersonal{{ persona.id }}">
+                                        Editar
+                                    </button>
+                                    <a href="{{ url_for('eliminar_personal', id=persona.id) }}" 
+                                       class="btn btn-sm btn-outline-danger"
+                                       onclick="return confirm('¿Seguro que quieres eliminar este personal?')">
+                                        Eliminar
+                                    </a>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center text-muted">
+                                    No hay personal registrado. Agrega tu primer miembro del equipo.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot class="table-secondary">
+                            <tr>
+                                <td colspan="3" class="text-end"><strong>TOTAL Operativo:</strong></td>
+                                <td class="text-end"><strong>$ {{ total_salarios|round(2) }}</strong></td>
+                                <td class="text-center">
+                                    <small>Nro personal: {{ personal|length }}</small>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resumen de todas las fases -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0">📊 DATOS PREVIOS</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <!-- Datos del proyecto -->
+                    <div class="col-md-4">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>PROYECTO:</th>
+                                <td>{{ proyecto.nombre }}</td>
+                            </tr>
+                            <tr>
+                                <th>Actividad:</th>
+                                <td>{{ proyecto.tipo_actividad }}</td>
+                            </tr>
+                            <tr>
+                                <th>Inversión:</th>
+                                <td>{{ 'Sí' if proyecto.tiene_inversion == 1 else 'No' }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-4">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Tasa:</th>
+                                <td>{{ (proyecto.tasa_descuento * 100)|round(3) }}%</td>
+                            </tr>
+                            <tr>
+                                <th>Producto:</th>
+                                <td>{{ proyecto.nombre_producto }}</td>
+                            </tr>
+                            <tr>
+                                <th>Precio:</th>
+                                <td>$ {{ proyecto.precio_producto|round(2) }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <!-- Totales acumulados -->
+                    <div class="col-md-4">
+                        <div class="card bg-light h-100">
+                            <div class="card-body">
+                                <h6 class="card-title text-center mb-3">TOTALES ACUMULADOS</h6>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Costos:</span>
+                                    <strong class="text-success">$ {{ total_costos|round(2) }}</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Gastos:</span>
+                                    <strong class="text-warning">$ {{ total_gastos|round(2) }}</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <span>Salarios:</span>
+                                    <strong class="text-danger">$ {{ total_salarios|round(2) }}</strong>
+                                </div>
+                                <hr>
+                                <div class="d-flex justify-content-between">
+                                    <strong>Total General:</strong>
+                                    <strong>$ {{ (total_costos + total_gastos + total_salarios)|round(2) }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botones de navegación -->
+        <div class="d-flex justify-content-between mt-4">
+            <div>
+                <a href="{{ url_for('viabilidad_tecnica') }}" class="btn btn-outline-secondary">
+                    ← Volver: viabilidad tecnica
+                </a>
+            </div>
+            <div>
+                <a href="{{ url_for('equipo_maquinaria') }}" class="btn btn-primary">
+                    Siguiente: Equipo y maquinaria →
+                </a>
+            </div>
+        </div>
+        
+        {% endif %} <!-- Fin del if proyecto -->
+    </div>
+</div>
+
+<!-- Modales para editar personal -->
+{% for persona in personal %}
+<div class="modal fade" id="modalEditarPersonal{{ persona.id }}" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title">Editar Personal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST" action="{{ url_for('editar_personal', id=persona.id) }}">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nombre_personal_{{ persona.id }}" class="form-label">Nombre:</label>
+                        <input type="text" class="form-control" id="nombre_personal_{{ persona.id }}" 
+                               name="nombre_personal" value="{{ persona.nombre }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="perfil_personal_{{ persona.id }}" class="form-label">Perfil:</label>
+                        <textarea class="form-control" id="perfil_personal_{{ persona.id }}" 
+                                  name="perfil_personal" rows="3">{{ persona.perfil }}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="salario_mensual_{{ persona.id }}" class="form-label">Salario Mensual:</label>
+                        <input type="number" class="form-control" id="salario_mensual_{{ persona.id }}" 
+                               name="salario_mensual" value="{{ persona.salario_mensual }}" step="0.01" min="0" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-warning">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Formatear salario al perder foco
+    document.querySelectorAll('input[name="salario_mensual"]').forEach(input => {
+        input.addEventListener('blur', function() {
+            let valor = parseFloat(this.value);
+            if (!isNaN(valor)) {
+                this.value = valor.toFixed(2); // 2 decimales
+            }
+        });
+    });
+</script>
+{% endblock %}
+
+proyecto_pep/templates/proyecto/viabilidad_tecnica.html:
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <!-- Encabezado -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">🔧 SEGUNDA FASE: Viabilidad Técnica</h2>
+            {% if proyecto %}
+            <div>
+                <span class="badge bg-primary">Proyecto: {{ proyecto.nombre }}</span>
+                <span class="badge bg-info">Producto: {{ proyecto.nombre_producto }}</span>
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Información del Excel -->
+        <div class="alert alert-info mb-4">
+            <h5 class="alert-heading">ℹ️ Como en tu Excel:</h5>
+            <p class="mb-0">Esta sección corresponde a la <strong>"SEGUNDA FASE: Viabilidad técnica"</strong> de tu archivo Excel. 
+            Aquí gestionas los costos y gastos del proyecto con sistema CRUD (añadir, editar, eliminar).</p>
+        </div>
+
+        <!-- Advertencia si no hay proyecto -->
+        {% if not proyecto %}
+        <div class="alert alert-warning">
+            <h5>⚠️ Primero debes crear un proyecto</h5>
+            <p>Para gestionar costos y gastos, primero necesitas crear un proyecto en la sección "Datos Iniciales".</p>
+            <a href="{{ url_for('datos_iniciales') }}" class="btn btn-warning">Ir a Datos Iniciales →</a>
+        </div>
+        {% else %}
+        
+        <!-- Sección de Costos -->
+        <div class="row">
+            <!-- Columna de COSTOS -->
+            <div class="col-md-6">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">COSTOS</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Formulario para agregar costo -->
+                        <form method="POST" action="{{ url_for('agregar_costo') }}" class="mb-4">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="nombre_costo" class="form-label">
+                                        <strong>nombre del costo:</strong>
+                                    </label>
+                                    <input type="text" class="form-control" id="nombre_costo" 
+                                           name="nombre_costo" placeholder="Ej: monitor de 20 pulgadas" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="valor_costo" class="form-label">
+                                        <strong>valor o precio del costo:</strong>
+                                    </label>
+                                    <input type="number" class="form-control" id="valor_costo" 
+                                           name="valor_costo" step="0.01" min="0" required>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-success w-100">
+                                        ➕ añadir costo
+                                    </button>
+                                    <div class="form-text text-center mt-2">
+                                        <small>este será un botón que añadirá a la lista de costo</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- Tabla de costos -->
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th width="50">Nro</th>
+                                        <th>Lista de costos</th>
+                                        <th width="120">Valor</th>
+                                        <th width="150" class="text-center">opcion</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for costo in costos %}
+                                    <tr>
+                                        <td class="text-center">{{ loop.index }}</td>
+                                        <td>{{ costo.nombre }}</td>
+                                        <td class="text-end">$ {{ costo.valor|round(2) }}</td>
+                                        <td class="text-center">
+                                            <!-- Botón para editar (abrirá modal) -->
+                                            <button type="button" class="btn btn-sm btn-outline-primary" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#modalEditarCosto{{ costo.id }}">
+                                                Editar
+                                            </button>
+                                            <a href="{{ url_for('eliminar_costo', id=costo.id) }}" 
+                                               class="btn btn-sm btn-outline-danger"
+                                               onclick="return confirm('¿Seguro que quieres eliminar este costo?')">
+                                                Eliminar
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="4" class="text-center text-muted">
+                                            No hay costos registrados. Agrega tu primer costo.
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                <tfoot class="table-secondary">
+                                    <tr>
+                                        <td colspan="2" class="text-end"><strong>TOTAL COSTOS:</strong></td>
+                                        <td class="text-end"><strong>$ {{ total_costos|round(2) }}</strong></td>
+                                        <td class="text-center">
+                                            <small>Nro costos: {{ costos|length }}</small>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna de GASTOS -->
+            <div class="col-md-6">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="mb-0">GASTOS</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Formulario para agregar gasto -->
+                        <form method="POST" action="{{ url_for('agregar_gasto') }}" class="mb-4">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="nombre_gasto" class="form-label">
+                                        <strong>nombre del gasto:</strong>
+                                    </label>
+                                    <input type="text" class="form-control" id="nombre_gasto" 
+                                           name="nombre_gasto" placeholder="Ej: Alquiler del local" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="valor_gasto" class="form-label">
+                                        <strong>valor o precio del gasto:</strong>
+                                    </label>
+                                    <input type="number" class="form-control" id="valor_gasto" 
+                                           name="valor_gasto" step="0.01" min="0" required>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-warning w-100">
+                                        ➕ añadir gasto
+                                    </button>
+                                    <div class="form-text text-center mt-2">
+                                        <small>este será un botón que añadirá a la lista de gastos</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- Tabla de gastos -->
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th width="50">Nro</th>
+                                        <th>Lista de gastos</th>
+                                        <th width="120">Valor</th>
+                                        <th width="150" class="text-center">opcion</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for gasto in gastos %}
+                                    <tr>
+                                        <td class="text-center">{{ loop.index }}</td>
+                                        <td>{{ gasto.nombre }}</td>
+                                        <td class="text-end">$ {{ gasto.valor|round(2) }}</td>
+                                        <td class="text-center">
+                                            <!-- Botón para editar (abrirá modal) -->
+                                            <button type="button" class="btn btn-sm btn-outline-warning" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#modalEditarGasto{{ gasto.id }}">
+                                                Editar
+                                            </button>
+                                            <a href="{{ url_for('eliminar_gasto', id=gasto.id) }}" 
+                                               class="btn btn-sm btn-outline-danger"
+                                               onclick="return confirm('¿Seguro que quieres eliminar este gasto?')">
+                                                Eliminar
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="4" class="text-center text-muted">
+                                            No hay gastos registrados. Agrega tu primer gasto.
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                <tfoot class="table-secondary">
+                                    <tr>
+                                        <td colspan="2" class="text-end"><strong>TOTAL GASTOS:</strong></td>
+                                        <td class="text-end"><strong>$ {{ total_gastos|round(2) }}</strong></td>
+                                        <td class="text-center">
+                                            <small>Nro gastos: {{ gastos|length }}</small>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resumen Total -->
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-secondary text-white">
+                        <h5 class="mb-0">📊 DATOS PREVIOS</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th>PROYECTO:</th>
+                                        <td>{{ proyecto.nombre }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Actividad:</th>
+                                        <td>{{ proyecto.tipo_actividad }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Inversión:</th>
+                                        <td>{{ 'Sí' if proyecto.tiene_inversion == 1 else 'No' }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th>Tasa:</th>
+                                        <td>{{ (proyecto.tasa_descuento * 100)|round(3) }}%</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Producto:</th>
+                                        <td>{{ proyecto.nombre_producto }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Precio:</th>
+                                        <td>$ {{ proyecto.precio_producto|round(2) }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Totales de costos y gastos -->
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <div class="card bg-light">
+                                    <div class="card-body text-center">
+                                        <h5>TOTAL COSTOS</h5>
+                                        <h3 class="text-success">$ {{ total_costos|round(2) }}</h3>
+                                        <p class="mb-0">
+                                            <small>{{ costos|length }} costos registrados</small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card bg-light">
+                                    <div class="card-body text-center">
+                                        <h5>TOTAL GASTOS</h5>
+                                        <h3 class="text-warning">$ {{ total_gastos|round(2) }}</h3>
+                                        <p class="mb-0">
+                                            <small>{{ gastos|length }} gastos registrados</small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botones de navegación -->
+        <div class="d-flex justify-content-between mt-4">
+            <a href="{{ url_for('datos_iniciales') }}" class="btn btn-outline-secondary">
+                ← Volver a Datos Iniciales
+            </a>
+            <a href="{{ url_for('viabilidad_operativa') }}" class="btn btn-primary">
+                Siguiente: Viabilidad Operativa →
+            </a>
+        </div>
+        
+        {% endif %} <!-- Fin del if proyecto -->
+    </div>
+</div>
+
+<!-- Modales para editar costos y gastos -->
+{% for costo in costos %}
+<div class="modal fade" id="modalEditarCosto{{ costo.id }}" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">Editar Costo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST" action="{{ url_for('editar_costo', id=costo.id) }}">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nombre_costo_{{ costo.id }}" class="form-label">Nombre del costo:</label>
+                        <input type="text" class="form-control" id="nombre_costo_{{ costo.id }}" 
+                               name="nombre_costo" value="{{ costo.nombre }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="valor_costo_{{ costo.id }}" class="form-label">Valor:</label>
+                        <input type="number" class="form-control" id="valor_costo_{{ costo.id }}" 
+                               name="valor_costo" value="{{ costo.valor }}" step="0.01" min="0" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% for gasto in gastos %}
+<div class="modal fade" id="modalEditarGasto{{ gasto.id }}" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title">Editar Gasto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST" action="{{ url_for('editar_gasto', id=gasto.id) }}">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nombre_gasto_{{ gasto.id }}" class="form-label">Nombre del gasto:</label>
+                        <input type="text" class="form-control" id="nombre_gasto_{{ gasto.id }}" 
+                               name="nombre_gasto" value="{{ gasto.nombre }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="valor_gasto_{{ gasto.id }}" class="form-label">Valor:</label>
+                        <input type="number" class="form-control" id="valor_gasto_{{ gasto.id }}" 
+                               name="valor_gasto" value="{{ gasto.valor }}" step="0.01" min="0" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-warning">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Formatear valores al perder foco
+    document.querySelectorAll('input[type="number"]').forEach(input => {
+        input.addEventListener('blur', function() {
+            let valor = parseFloat(this.value);
+            if (!isNaN(valor)) {
+                this.value = valor.toFixed(2); // 2 decimales
+            }
+        });
+    });
+
+    // Confirmación antes de eliminar (ya está en el enlace)
+</script>
+{% endblock %}
+
+proyecto_pep/templates/resultados/calculo_financiero.html:
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <!-- Encabezado -->
+        <div class="text-center mb-5">
+            <h1 class="display-4">📈 Resultados Financieros</h1>
+            <p class="lead">Análisis completo de rentabilidad del proyecto</p>
+            {% if resultados.proyecto %}
+            <div class="mt-3">
+                <span class="badge bg-primary fs-6">Proyecto: {{ resultados.proyecto.nombre }}</span>
+                <span class="badge bg-info fs-6">Producto: {{ resultados.proyecto.nombre_producto }}</span>
+                <span class="badge bg-secondary fs-6">Tasa: {{ (resultados.proyecto.tasa_descuento * 100)|round(3) }}%</span>
+            </div>
+            {% endif %}
+        </div>
+
+        {% if not resultados.proyecto %}
+        <div class="alert alert-warning">
+            <h5>⚠️ Primero debes crear un proyecto</h5>
+            <p>Para ver resultados financieros, primero necesitas crear un proyecto y completar todas las fases.</p>
+            <a href="{{ url_for('datos_iniciales') }}" class="btn btn-warning">Ir a Datos Iniciales →</a>
+        </div>
+        {% else %}
+        
+        <!-- Resumen de Inversión Total -->
+        <div class="row mb-5">
+            <div class="col-md-8 mx-auto">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-dark text-white text-center">
+                        <h4 class="mb-0">💼 INVERSIÓN TOTAL DEL PROYECTO</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-md-3 mb-3">
+                                <div class="p-3 bg-success bg-opacity-10 rounded">
+                                    <h5 class="text-success">Costos</h5>
+                                    <h3>$ {{ resultados.totales.costos|round(2) }}</h3>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="p-3 bg-warning bg-opacity-10 rounded">
+                                    <h5 class="text-warning">Gastos</h5>
+                                    <h3>$ {{ resultados.totales.gastos|round(2) }}</h3>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="p-3 bg-danger bg-opacity-10 rounded">
+                                    <h5 class="text-danger">Salarios (7 años)</h5>
+                                    <h3>$ {{ (resultados.totales.salarios * 12 * 7)|round(2) }}</h3>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="p-3 bg-info bg-opacity-10 rounded">
+                                    <h5 class="text-info">Materiales</h5>
+                                    <h3>$ {{ resultados.totales.materiales|round(2) }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <h2 class="text-dark">
+                                Inversión Total: 
+                                <span class="text-primary">$ {{ resultados.calculos.inversion_total|round(2) }}</span>
+                            </h2>
+                            {% if resultados.proyecto.tiene_inversion == 1 %}
+                            <p class="text-muted mb-0">
+                                Incluye inversión inicial de $ {{ resultados.proyecto.valor_inversion|round(2) }}
+                            </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Principales Indicadores -->
+        <div class="row mb-5">
+            <div class="col-md-10 mx-auto">
+                <h3 class="text-center mb-4">📊 INDICADORES FINANCIEROS PRINCIPALES</h3>
+                
+                <div class="row g-4">
+                    <!-- VAN -->
+                    <div class="col-md-3">
+                        <div class="card h-100 text-center border-0 shadow-sm 
+                                    {% if resultados.calculos.van > 0 %}border-success border-3
+                                    {% else %}border-danger border-3{% endif %}">
+                            <div class="card-body">
+                                <h5 class="card-title">VAN</h5>
+                                <p class="card-text text-muted">Valor Actual Neto</p>
+                                <h2 class="{% if resultados.calculos.van > 0 %}text-success{% else %}text-danger{% endif %}">
+                                    $ {{ resultados.calculos.van|round(2) }}
+                                </h2>
+                                <div class="mt-3">
+                                    {% if resultados.calculos.van > 0 %}
+                                    <span class="badge bg-success fs-6">PROYECTO VIABLE</span>
+                                    <p class="mt-2 mb-0">
+                                        <small>El proyecto crea valor</small>
+                                    </p>
+                                    {% else %}
+                                    <span class="badge bg-danger fs-6">NO VIABLE</span>
+                                    <p class="mt-2 mb-0">
+                                        <small>El proyecto destruye valor</small>
+                                    </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TIR -->
+                    <div class="col-md-3">
+                        <div class="card h-100 text-center border-0 shadow-sm 
+                                    {% if resultados.calculos.tir and resultados.calculos.tir > resultados.proyecto.tasa_descuento * 100 %}border-success border-3
+                                    {% else %}border-danger border-3{% endif %}">
+                            <div class="card-body">
+                                <h5 class="card-title">TIR</h5>
+                                <p class="card-text text-muted">Tasa Interna de Retorno</p>
+                                <h2 class="{% if resultados.calculos.tir and resultados.calculos.tir > resultados.proyecto.tasa_descuento * 100 %}text-success{% else %}text-danger{% endif %}">
+                                    {% if resultados.calculos.tir %}
+                                    {{ resultados.calculos.tir|round(2) }}%
+                                    {% else %}
+                                    N/A
+                                    {% endif %}
+                                </h2>
+                                <div class="mt-3">
+                                    {% if resultados.calculos.tir and resultados.calculos.tir > resultados.proyecto.tasa_descuento * 100 %}
+                                    <span class="badge bg-success fs-6">ACEPTABLE</span>
+                                    <p class="mt-2 mb-0">
+                                        <small>TIR > Tasa de descuento</small>
+                                    </p>
+                                    {% else %}
+                                    <span class="badge bg-danger fs-6">NO ACEPTABLE</span>
+                                    <p class="mt-2 mb-0">
+                                        <small>TIR ≤ Tasa de descuento</small>
+                                    </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- B/C -->
+                    <div class="col-md-3">
+                        <div class="card h-100 text-center border-0 shadow-sm 
+                                    {% if resultados.calculos.bc > 1 %}border-success border-3
+                                    {% else %}border-danger border-3{% endif %}">
+                            <div class="card-body">
+                                <h5 class="card-title">B/C</h5>
+                                <p class="card-text text-muted">Relación Beneficio/Costo</p>
+                                <h2 class="{% if resultados.calculos.bc > 1 %}text-success{% else %}text-danger{% endif %}">
+                                    {{ resultados.calculos.bc|round(3) }}
+                                </h2>
+                                <div class="mt-3">
+                                    {% if resultados.calculos.bc > 1 %}
+                                    <span class="badge bg-success fs-6">CONVIENE</span>
+                                    <p class="mt-2 mb-0">
+                                        <small>Beneficios > Costos</small>
+                                    </p>
+                                    {% else %}
+                                    <span class="badge bg-danger fs-6">NO CONVIENE</span>
+                                    <p class="mt-2 mb-0">
+                                        <small>Costos ≥ Beneficios</small>
+                                    </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PRI -->
+                    <div class="col-md-3">
+                        <div class="card h-100 text-center border-0 shadow-sm 
+                                    {% if resultados.calculos.pri and resultados.calculos.pri <= 3 %}border-success border-3
+                                    {% elif resultados.calculos.pri and resultados.calculos.pri <= 5 %}border-warning border-3
+                                    {% else %}border-danger border-3{% endif %}">
+                            <div class="card-body">
+                                <h5 class="card-title">PRI</h5>
+                                <p class="card-text text-muted">Periodo de Recuperación</p>
+                                <h2 class="
+                                    {% if resultados.calculos.pri and resultados.calculos.pri <= 3 %}text-success
+                                    {% elif resultados.calculos.pri and resultados.calculos.pri <= 5 %}text-warning
+                                    {% else %}text-danger{% endif %}">
+                                    {% if resultados.calculos.pri %}
+                                    {{ resultados.calculos.pri|round(2) }} años
+                                    {% else %}
+                                    N/A
+                                    {% endif %}
+                                </h2>
+                                <div class="mt-3">
+                                    {% if resultados.calculos.pri %}
+                                        {% if resultados.calculos.pri <= 3 %}
+                                        <span class="badge bg-success fs-6">EXCELENTE</span>
+                                        <p class="mt-2 mb-0">
+                                            <small>Recuperación rápida</small>
+                                        </p>
+                                        {% elif resultados.calculos.pri <= 5 %}
+                                        <span class="badge bg-warning fs-6">ACEPTABLE</span>
+                                        <p class="mt-2 mb-0">
+                                            <small>Recuperación moderada</small>
+                                        </p>
+                                        {% else %}
+                                        <span class="badge bg-danger fs-6">LENTO</span>
+                                        <p class="mt-2 mb-0">
+                                            <small>Recuperación lenta</small>
+                                        </p>
+                                        {% endif %}
+                                    {% else %}
+                                    <span class="badge bg-secondary fs-6">NO CALCULABLE</span>
+                                    <p class="mt-2 mb-0">
+                                        <small>No se recupera inversión</small>
+                                    </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flujos de Caja Proyectados -->
+        <div class="row mb-5">
+            <div class="col-md-10 mx-auto">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">📅 Flujos de Caja Proyectados (7 años)</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered text-center">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Año</th>
+                                        <th>Inversión/Costo</th>
+                                        <th>Ingresos</th>
+                                        <th>Flujo Neto</th>
+                                        <th>Flujo Acumulado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% set acumulado = 0 %}
+                                    {% for i in range(8) %}
+                                    {% set flujo = resultados.calculos.flujos[i] if i < resultados.calculos.flujos|length else 0 %}
+                                    {% set acumulado = acumulado + flujo %}
+                                    <tr class="{% if i == 0 %}table-danger{% elif flujo > 0 %}table-success{% else %}table-warning{% endif %}">
+                                        <td><strong>Año {{ i }}</strong></td>
+                                        <td>
+                                            {% if i == 0 %}
+                                            <span class="text-danger">- $ {{ (-flujo)|round(2) if flujo < 0 else 0 }}</span>
+                                            {% else %}
+                                            $ {{ (resultados.totales.costos / 7 + resultados.totales.gastos / 7 + resultados.totales.salarios * 12)|round(2) }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if i > 0 %}
+                                            $ {{ (flujo + resultados.totales.costos / 7 + resultados.totales.gastos / 7 + resultados.totales.salarios * 12)|round(2) }}
+                                            {% else %}
+                                            $ 0
+                                            {% endif %}
+                                        </td>
+                                        <td class="{% if flujo > 0 %}text-success{% else %}text-danger{% endif %}">
+                                            $ {{ flujo|round(2) }}
+                                        </td>
+                                        <td class="{% if acumulado > 0 %}text-success{% else %}text-danger{% endif %}">
+                                            $ {{ acumulado|round(2) }}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Gráfico simple -->
+                        <div class="mt-4">
+                            <h5>📈 Visualización de Flujos</h5>
+                            <div class="progress" style="height: 30px;">
+                                {% for i in range(1, 8) %}
+                                {% set flujo = resultados.calculos.flujos[i] if i < resultados.calculos.flujos|length else 0 %}
+                                <div class="progress-bar {% if flujo > 0 %}bg-success{% else %}bg-danger{% endif %}" 
+                                     style="width: 14.28%;" 
+                                     title="Año {{ i }}: ${{ flujo|round(2) }}">
+                                    A{{ i }}
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="d-flex justify-content-between mt-2">
+                                <small class="text-muted">Año 1</small>
+                                <small class="text-muted">Año 7</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Análisis de Sensibilidad -->
+        <div class="row mb-5">
+            <div class="col-md-10 mx-auto">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-warning text-dark">
+                        <h4 class="mb-0">🔍 Análisis de Sensibilidad</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Variación del VAN con la Tasa de Descuento</h5>
+                                <table class="table table-sm table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Tasa</th>
+                                            <th>VAN</th>
+                                            <th>Decisión</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for tasa in [0.05, 0.10, 0.15, 0.20] %}
+                                        {% set van_tasa = calcular_van(tasa, resultados.calculos.flujos) %}
+                                        <tr>
+                                            <td>{{ (tasa * 100)|round(0) }}%</td>
+                                            <td>$ {{ van_tasa|round(2) }}</td>
+                                            <td>
+                                                {% if van_tasa > 0 %}
+                                                <span class="badge bg-success">Aceptar</span>
+                                                {% else %}
+                                                <span class="badge bg-danger">Rechazar</span>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Recomendación Final</h5>
+                                <div class="alert 
+                                    {% if resultados.calculos.van > 0 and resultados.calculos.tir and resultados.calculos.tir > resultados.proyecto.tasa_descuento * 100 and resultados.calculos.bc > 1 %}
+                                    alert-success
+                                    {% else %}
+                                    alert-danger
+                                    {% endif %}">
+                                    <h5 class="alert-heading">
+                                        {% if resultados.calculos.van > 0 and resultados.calculos.tir and resultados.calculos.tir > resultados.proyecto.tasa_descuento * 100 and resultados.calculos.bc > 1 %}
+                                        ✅ PROYECTO RECOMENDADO
+                                        {% else %}
+                                        ❌ PROYECTO NO RECOMENDADO
+                                        {% endif %}
+                                    </h5>
+                                    <p>
+                                        {% if resultados.calculos.van > 0 and resultados.calculos.tir and resultados.calculos.tir > resultados.proyecto.tasa_descuento * 100 and resultados.calculos.bc > 1 %}
+                                        Basado en el análisis financiero, este proyecto es viable y recomendable. 
+                                        Crea valor para los inversionistas y tiene una relación beneficio/costo favorable.
+                                        {% else %}
+                                        Basado en el análisis financiero, este proyecto no es recomendable en las condiciones actuales. 
+                                        Se sugiere revisar costos, precios o estructura del proyecto.
+                                        {% endif %}
+                                    </p>
+                                </div>
+                                
+                                <!-- Rentabilidad -->
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6>Rentabilidad sobre Inversión</h6>
+                                        <div class="progress mt-2" style="height: 25px;">
+                                            <div class="progress-bar bg-success" 
+                                                 style="width: {{ [resultados.calculos.rentabilidad, 0]|max }}%; 
+                                                        max-width: 100%;">
+                                                {{ resultados.calculos.rentabilidad|round(2) }}%
+                                            </div>
+                                        </div>
+                                        <small class="text-muted">
+                                            Retorno sobre la inversión inicial
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="d-flex justify-content-between mt-4">
+            <div>
+                <a href="{{ url_for('flujos_caja') }}" class="btn btn-outline-secondary">
+                    ← Volver a Flujos de Caja
+                </a>
+                <a href="{{ url_for('index') }}" class="btn btn-outline-primary ms-2">
+                    🏠 Volver al Inicio
+                </a>
+            </div>
+            <div>
+                <button onclick="window.print()" class="btn btn-info">
+                    🖨️ Imprimir Reporte
+                </button>
+                <a href="{{ url_for('limpiar_datos') }}" 
+                   class="btn btn-danger ms-2"
+                   onclick="return confirm('¿Estás seguro de limpiar todos los datos? Esto borrará costos, gastos, personal y materiales.')">
+                    🗑️ Limpiar Datos (Pruebas)
+                </a>
+            </div>
+        </div>
+
+        <!-- Nota final -->
+        <div class="alert alert-light mt-4">
+            <h6>📝 Notas sobre los cálculos:</h6>
+            <ul class="mb-0">
+                <li><strong>VAN:</strong> Valor Actual Neto. Si > 0, el proyecto crea valor.</li>
+                <li><strong>TIR:</strong> Tasa Interna de Retorno. Debe ser mayor que la tasa de descuento.</li>
+                <li><strong>B/C:</strong> Relación Beneficio/Costo. Si > 1, los beneficios superan los costos.</li>
+                <li><strong>PRI:</strong> Periodo de Recuperación de la Inversión. Menor es mejor.</li>
+                <li>Los cálculos asumen una proyección de 7 años y distribución uniforme de costos.</li>
+            </ul>
+        </div>
+        
+        {% endif %} <!-- Fin del if proyecto -->
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<style>
+    .card {
+        transition: transform 0.3s;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .progress-bar {
+        font-size: 12px;
+        font-weight: bold;
+    }
+    
+    @media print {
+        .navbar, .btn, footer {
+            display: none !important;
+        }
+        
+        .card {
+            border: 1px solid #000 !important;
+            box-shadow: none !important;
+        }
+    }
+</style>
+
+<script>
+    // Función para calcular VAN (usada en análisis de sensibilidad)
+    function calcularVAN(tasa, flujos) {
+        let van = 0;
+        for (let i = 0; i < flujos.length; i++) {
+            van += flujos[i] / Math.pow(1 + tasa, i);
+        }
+        return van;
+    }
+    
+    // Mejorar visualización para impresión
+    document.addEventListener('DOMContentLoaded', function() {
+        // Agregar fecha al reporte
+        const fecha = new Date().toLocaleDateString('es-ES', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        
+        const fechaElement = document.createElement('div');
+        fechaElement.className = 'text-center text-muted mb-3';
+        fechaElement.innerHTML = `<small>Reporte generado el ${fecha}</small>`;
+        
+        const header = document.querySelector('.text-center.mb-5');
+        if (header) {
+            header.appendChild(fechaElement);
+        }
+    });
+</script>
+{% endblock %}
+
+proyecto_pep/templates/base.html:
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto PEP - Preparación y Evaluación de Proyectos</title>
+    
+    <!-- Bootstrap 5 CDN (sin instalación local) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
+</head>
+<body>
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                📊 Proyecto PEP
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('datos_iniciales') }}">Datos Iniciales</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('viabilidad_tecnica') }}">Viabilidad Técnica</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('viabilidad_operativa') }}">Viabilidad Operativa</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('equipo_maquinaria') }}">Equipo y Maquinaria</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('flujos_caja') }}">Flujos de Caja</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('calculos_financieros') }}">Resultados</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main class="container mt-4">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}
+        <!-- El contenido específico de cada página irá aquí -->
+        {% endblock %}
+    </main>
+
+    <!-- Pie de página -->
+    <footer class="mt-5 py-3 bg-light border-top">
+        <div class="container text-center">
+            <p class="mb-0 text-muted">
+                Proyecto PEP - Preparación y Evaluación de Proyectos • 
+                Desarrollado con Flask • 
+                <small>{{ "2024" }}</small>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS y dependencias -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- JavaScript personalizado -->
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    
+    {% block scripts %}
+    <!-- Scripts específicos de cada página -->
+    {% endblock %}
+</body>
+</html>
+
+proyecto_pep/templates/index.html:
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="text-center mb-5">
+            <h1 class="display-4">📊 Proyecto PEP</h1>
+            <p class="lead">Sistema de Preparación y Evaluación de Proyectos</p>
+            <p class="text-muted">Desarrollado con Flask • Similar a tu estructura de Excel</p>
+        </div>
+
+        <!-- Tarjetas de las fases del proyecto -->
+        <div class="row g-4">
+            <!-- Fase 1: Datos Iniciales -->
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">1. Datos Iniciales</h5>
+                        <p class="card-text">
+                            Ingresa la información básica del proyecto: nombre, actividad, 
+                            inversión inicial, tasa de descuento, producto y precio.
+                        </p>
+                        <a href="{{ url_for('datos_iniciales') }}" class="btn btn-primary">
+                            Comenzar aquí
+                        </a>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <small class="text-muted">PRIMERA FASE en tu Excel</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fase 2: Viabilidad Técnica -->
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-success">2. Viabilidad Técnica</h5>
+                        <p class="card-text">
+                            Gestiona costos y gastos del proyecto con sistema CRUD completo.
+                        </p>
+                        <a href="{{ url_for('viabilidad_tecnica') }}" class="btn btn-success">
+                            Gestionar Costos y Gastos
+                        </a>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <small class="text-muted">SEGUNDA FASE en tu Excel</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fase 3: Viabilidad Operativa -->
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-warning">3. Viabilidad Operativa</h5>
+                        <p class="card-text">
+                            Administra el personal necesario, perfiles y salarios mensuales.
+                        </p>
+                        <a href="{{ url_for('viabilidad_operativa') }}" class="btn btn-warning">
+                            Gestionar Personal
+                        </a>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <small class="text-muted">TERCERA FASE en tu Excel</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fase 4: Equipo y Maquinaria -->
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-info">4. Equipo y Maquinaria</h5>
+                        <p class="card-text">
+                            Registra materiales, equipos e inversiones necesarias para el proyecto.
+                        </p>
+                        <a href="{{ url_for('equipo_maquinaria') }}" class="btn btn-info">
+                            Gestionar Materiales
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fase 5: Flujos de Caja -->
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-purple">5. Flujos de Caja</h5>
+                        <p class="card-text">
+                            Define ventas por día, semana, mes o año. Calcula ingresos, egresos y utilidad.
+                        </p>
+                        <a href="{{ url_for('flujos_caja') }}" class="btn btn-purple" style="background-color: #6f42c1; color: white;">
+                            Configurar Flujos
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fase 6: Resultados Financieros -->
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-danger">6. Resultados Financieros</h5>
+                        <p class="card-text">
+                            Calcula VAN, TIR, relación B/C, PRI y otros indicadores de rentabilidad.
+                        </p>
+                        <a href="{{ url_for('calculos_financieros') }}" class="btn btn-danger">
+                            Ver Resultados
+                        </a>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <small class="text-muted">Análisis completo como en tu Excel</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instrucciones -->
+        <div class="mt-5 p-4 bg-light rounded">
+            <h4>📋 Instrucciones de Uso</h4>
+            <ol class="mt-3">
+                <li>Comienza con <strong>"Datos Iniciales"</strong> para configurar tu proyecto</li>
+                <li>Sigue el orden de las fases como en tu Excel</li>
+                <li>Cada fase guarda automáticamente los datos</li>
+                <li>Puedes regresar a fases anteriores para modificar datos</li>
+                <li>Los cálculos financieros se actualizan automáticamente</li>
+            </ol>
+            <div class="alert alert-info mt-3">
+                <strong>💡 Tip:</strong> Este sistema replica la estructura de tu archivo Excel 
+                "proyecto pep 2.xlsx" pero en formato web interactivo.
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<style>
+    .btn-purple {
+        background-color: #6f42c1;
+        border-color: #6f42c1;
+        color: white;
+    }
+    .btn-purple:hover {
+        background-color: #5a32a3;
+        border-color: #5a32a3;
+        color: white;
+    }
+</style>
+{% endblock %}
+
+proyecto_pep/app.py:
+from flask import Flask, render_template, request, redirect, url_for, flash
+import os
+import sqlite3
+from config import Config
+
+# Inicializar la aplicación Flask
+app = Flask(__name__)
+app.config.from_object(Config)
+
+# Función para conectar a la base de datos
+def get_db_connection():
+    conn = sqlite3.connect(app.config['DATABASE_PATH'])
+    conn.row_factory = sqlite3.Row  # Para obtener diccionarios en lugar de tuplas
+    return conn
+
+# Crear tablas de la base de datos si no existen
+def init_db():
+    conn = get_db_connection()
+    
+    # Tabla de proyectos (como tu PRIMERA FASE en Excel)
+    conn.execute('''
+    CREATE TABLE IF NOT EXISTS proyectos (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nombre TEXT NOT NULL,
+        tipo_actividad TEXT,
+        tiene_inversion INTEGER DEFAULT 0,
+        valor_inversion REAL DEFAULT 0,
+        tasa_descuento REAL DEFAULT 0.001,
+        nombre_producto TEXT,
+        precio_producto REAL,
+        fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+    ''')
+    
+    # Tabla de costos (como tu SEGUNDA FASE - Costos)
+    conn.execute('''
+    CREATE TABLE IF NOT EXISTS costos (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        proyecto_id INTEGER,
+        nombre TEXT NOT NULL,
+        valor REAL NOT NULL,
+        FOREIGN KEY (proyecto_id) REFERENCES proyectos (id)
+    )
+    ''')
+    
+    # Tabla de gastos (como tu SEGUNDA FASE - Gastos)
+    conn.execute('''
+    CREATE TABLE IF NOT EXISTS gastos (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        proyecto_id INTEGER,
+        nombre TEXT NOT NULL,
+        valor REAL NOT NULL,
+        FOREIGN KEY (proyecto_id) REFERENCES proyectos (id)
+    )
+    ''')
+    
+    # Tabla de personal (como tu TERCERA FASE - Viabilidad Operativa)
+    conn.execute('''
+    CREATE TABLE IF NOT EXISTS personal (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        proyecto_id INTEGER,
+        nombre TEXT NOT NULL,
+        perfil TEXT,
+        salario_mensual REAL NOT NULL,
+        FOREIGN KEY (proyecto_id) REFERENCES proyectos (id)
+    )
+    ''')
+    
+    # Tabla de materiales (como tu Equipo y maquinaria)
+    conn.execute('''
+    CREATE TABLE IF NOT EXISTS materiales (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        proyecto_id INTEGER,
+        nombre TEXT NOT NULL,
+        valor REAL NOT NULL,
+        FOREIGN KEY (proyecto_id) REFERENCES proyectos (id)
+    )
+    ''')
+    
+    # ... (mantén las tablas existentes)
+    
+    # Tabla para flujos de caja (por periodo)
+    conn.execute('''
+    CREATE TABLE IF NOT EXISTS flujos_caja (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        proyecto_id INTEGER,
+        tipo_periodo TEXT CHECK(tipo_periodo IN ('dias', 'semanas', 'meses', 'años')),
+        periodo_nombre TEXT,
+        productos_vendidos INTEGER DEFAULT 0,
+        FOREIGN KEY (proyecto_id) REFERENCES proyectos (id),
+        UNIQUE(proyecto_id, tipo_periodo, periodo_nombre)
+    )
+    ''')
+    
+    # Tabla para ventas por día (estructura específica)
+    conn.execute('''
+    CREATE TABLE IF NOT EXISTS ventas_dias (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        proyecto_id INTEGER,
+        lunes INTEGER DEFAULT 0,
+        martes INTEGER DEFAULT 0,
+        miercoles INTEGER DEFAULT 0,
+        jueves INTEGER DEFAULT 0,
+        viernes INTEGER DEFAULT 0,
+        sabado INTEGER DEFAULT 0,
+        domingo INTEGER DEFAULT 0,
+        FOREIGN KEY (proyecto_id) REFERENCES proyectos (id)
+    )
+    ''')
+    
+    # Tabla para ventas por semana
+    conn.execute('''
+    CREATE TABLE IF NOT EXISTS ventas_semanas (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        proyecto_id INTEGER,
+        semana1 INTEGER DEFAULT 0,
+        semana2 INTEGER DEFAULT 0,
+        semana3 INTEGER DEFAULT 0,
+        semana4 INTEGER DEFAULT 0,
+        FOREIGN KEY (proyecto_id) REFERENCES proyectos (id)
+    )
+    ''')
+    
+    # Tabla para ventas por mes
+    conn.execute('''
+    CREATE TABLE IF NOT EXISTS ventas_meses (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        proyecto_id INTEGER,
+        enero INTEGER DEFAULT 0,
+        febrero INTEGER DEFAULT 0,
+        marzo INTEGER DEFAULT 0,
+        abril INTEGER DEFAULT 0,
+        mayo INTEGER DEFAULT 0,
+        junio INTEGER DEFAULT 0,
+        julio INTEGER DEFAULT 0,
+        agosto INTEGER DEFAULT 0,
+        septiembre INTEGER DEFAULT 0,
+        octubre INTEGER DEFAULT 0,
+        noviembre INTEGER DEFAULT 0,
+        diciembre INTEGER DEFAULT 0,
+        FOREIGN KEY (proyecto_id) REFERENCES proyectos (id)
+    )
+    ''')
+    
+    # Tabla para ventas por año
+    conn.execute('''
+    CREATE TABLE IF NOT EXISTS ventas_anos (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        proyecto_id INTEGER,
+        año1 INTEGER DEFAULT 0,
+        año2 INTEGER DEFAULT 0,
+        año3 INTEGER DEFAULT 0,
+        año4 INTEGER DEFAULT 0,
+        año5 INTEGER DEFAULT 0,
+        año6 INTEGER DEFAULT 0,
+        año7 INTEGER DEFAULT 0,
+        FOREIGN KEY (proyecto_id) REFERENCES proyectos (id)
+    )
+    ''')
+    #tablas de flujos creadas hasta aqui
+    conn.commit()
+    conn.close()
+
+# Llamar a init_db al iniciar la aplicación
+with app.app_context():
+    init_db()
+
+# ... (mantén todo lo anterior hasta la línea con init_db())
+
+# Ruta principal - Home
+@app.route('/')
+def index():
+    # Verificar si ya existe un proyecto
+    conn = get_db_connection()
+    proyecto = conn.execute('SELECT * FROM proyectos ORDER BY id DESC LIMIT 1').fetchone()
+    conn.close()
+    
+    return render_template('index.html', proyecto=proyecto)
+
+# Ruta para datos iniciales del proyecto - ACTUALIZADA
+@app.route('/proyecto/datos-iniciales', methods=['GET', 'POST'])
+def datos_iniciales():
+    conn = get_db_connection()
+    
+    if request.method == 'POST':
+        # Obtener datos del formulario
+        nombre = request.form.get('nombre')
+        tipo_actividad = request.form.get('tipo_actividad')
+        tiene_inversion = 1 if request.form.get('tiene_inversion') == 'si' else 0
+        valor_inversion = float(request.form.get('valor_inversion', 0))
+        tasa_descuento = float(request.form.get('tasa_descuento', 0.001))
+        nombre_producto = request.form.get('nombre_producto')
+        precio_producto = float(request.form.get('precio_producto', 0))
+        
+        # Verificar si ya existe un proyecto
+        proyecto_existente = conn.execute('SELECT * FROM proyectos').fetchone()
+        
+        if proyecto_existente:
+            # Actualizar proyecto existente
+            conn.execute('''
+                UPDATE proyectos SET 
+                nombre = ?, tipo_actividad = ?, tiene_inversion = ?, 
+                valor_inversion = ?, tasa_descuento = ?, nombre_producto = ?, 
+                precio_producto = ?
+                WHERE id = ?
+            ''', (nombre, tipo_actividad, tiene_inversion, valor_inversion, 
+                  tasa_descuento, nombre_producto, precio_producto, proyecto_existente['id']))
+            flash('Proyecto actualizado correctamente', 'success')
+        else:
+            # Insertar nuevo proyecto
+            conn.execute('''
+                INSERT INTO proyectos 
+                (nombre, tipo_actividad, tiene_inversion, valor_inversion, 
+                 tasa_descuento, nombre_producto, precio_producto)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            ''', (nombre, tipo_actividad, tiene_inversion, valor_inversion, 
+                  tasa_descuento, nombre_producto, precio_producto))
+            flash('Proyecto creado correctamente', 'success')
+        
+        conn.commit()
+        conn.close()
+        return redirect(url_for('datos_iniciales'))
+    
+    # GET: Mostrar formulario con datos existentes
+    proyecto = conn.execute('SELECT * FROM proyectos ORDER BY id DESC LIMIT 1').fetchone()
+    conn.close()
+    
+    return render_template('proyecto/datos_iniciales.html', proyecto=proyecto)
+
+# ... (mantén las demás rutas como están)
+
+# ... (después de la función datos_iniciales)
+
+# ==================== VIABILIDAD TÉCNICA ====================
+
+# Ruta principal de viabilidad técnica
+@app.route('/proyecto/viabilidad-tecnica')
+def viabilidad_tecnica():
+    conn = get_db_connection()
+    
+    # Obtener el proyecto actual
+    proyecto = conn.execute('SELECT * FROM proyectos ORDER BY id DESC LIMIT 1').fetchone()
+    
+    # Obtener costos del proyecto
+    costos = []
+    total_costos = 0
+    if proyecto:
+        costos = conn.execute('SELECT * FROM costos WHERE proyecto_id = ? ORDER BY id', 
+                             (proyecto['id'],)).fetchall()
+        total_costos = conn.execute('SELECT SUM(valor) as total FROM costos WHERE proyecto_id = ?', 
+                                   (proyecto['id'],)).fetchone()['total'] or 0
+    
+    # Obtener gastos del proyecto
+    gastos = []
+    total_gastos = 0
+    if proyecto:
+        gastos = conn.execute('SELECT * FROM gastos WHERE proyecto_id = ? ORDER BY id', 
+                             (proyecto['id'],)).fetchall()
+        total_gastos = conn.execute('SELECT SUM(valor) as total FROM gastos WHERE proyecto_id = ?', 
+                                   (proyecto['id'],)).fetchone()['total'] or 0
+    
+    conn.close()
+    
+    return render_template('proyecto/viabilidad_tecnica.html', 
+                         proyecto=proyecto, 
+                         costos=costos, 
+                         gastos=gastos,
+                         total_costos=total_costos,
+                         total_gastos=total_gastos)
+
+# CRUD para Costos
+@app.route('/proyecto/agregar-costo', methods=['POST'])
+def agregar_costo():
+    if request.method == 'POST':
+        nombre = request.form.get('nombre_costo')
+        valor = float(request.form.get('valor_costo', 0))
+        
+        conn = get_db_connection()
+        proyecto = conn.execute('SELECT * FROM proyectos ORDER BY id DESC LIMIT 1').fetchone()
+        
+        if proyecto:
+            conn.execute('INSERT INTO costos (proyecto_id, nombre, valor) VALUES (?, ?, ?)',
+                        (proyecto['id'], nombre, valor))
+            conn.commit()
+            flash(f'Costo "{nombre}" agregado correctamente', 'success')
+        else:
+            flash('Primero debes crear un proyecto', 'warning')
+        
+        conn.close()
+    
+    return redirect(url_for('viabilidad_tecnica'))
+
+@app.route('/proyecto/editar-costo/<int:id>', methods=['GET', 'POST'])
+def editar_costo(id):
+    conn = get_db_connection()
+    
+    if request.method == 'POST':
+        nombre = request.form.get('nombre_costo')
+        valor = float(request.form.get('valor_costo', 0))
+        
+        conn.execute('UPDATE costos SET nombre = ?, valor = ? WHERE id = ?',
+                    (nombre, valor, id))
+        conn.commit()
+        conn.close()
+        
+        flash(f'Costo actualizado correctamente', 'success')
+        return redirect(url_for('viabilidad_tecnica'))
+    
+    # GET: Mostrar formulario de edición
+    costo = conn.execute('SELECT * FROM costos WHERE id = ?', (id,)).fetchone()
+    conn.close()
+    
+    if not costo:
+        flash('Costo no encontrado', 'error')
+        return redirect(url_for('viabilidad_tecnica'))
+    
+    return render_template('componentes/modal_editar_costo.html', costo=costo)
+
+@app.route('/proyecto/eliminar-costo/<int:id>')
+def eliminar_costo(id):
+    conn = get_db_connection()
+    
+    costo = conn.execute('SELECT * FROM costos WHERE id = ?', (id,)).fetchone()
+    if costo:
+        conn.execute('DELETE FROM costos WHERE id = ?', (id,))
+        conn.commit()
+        flash(f'Costo "{costo["nombre"]}" eliminado correctamente', 'success')
+    
+    conn.close()
+    return redirect(url_for('viabilidad_tecnica'))
+
+# CRUD para Gastos (similar a costos)
+@app.route('/proyecto/agregar-gasto', methods=['POST'])
+def agregar_gasto():
+    if request.method == 'POST':
+        nombre = request.form.get('nombre_gasto')
+        valor = float(request.form.get('valor_gasto', 0))
+        
+        conn = get_db_connection()
+        proyecto = conn.execute('SELECT * FROM proyectos ORDER BY id DESC LIMIT 1').fetchone()
+        
+        if proyecto:
+            conn.execute('INSERT INTO gastos (proyecto_id, nombre, valor) VALUES (?, ?, ?)',
+                        (proyecto['id'], nombre, valor))
+            conn.commit()
+            flash(f'Gasto "{nombre}" agregado correctamente', 'success')
+        else:
+            flash('Primero debes crear un proyecto', 'warning')
+        
+        conn.close()
+    
+    return redirect(url_for('viabilidad_tecnica'))
+
+@app.route('/proyecto/editar-gasto/<int:id>', methods=['GET', 'POST'])
+def editar_gasto(id):
+    conn = get_db_connection()
+    
+    if request.method == 'POST':
+        nombre = request.form.get('nombre_gasto')
+        valor = float(request.form.get('valor_gasto', 0))
+        
+        conn.execute('UPDATE gastos SET nombre = ?, valor = ? WHERE id = ?',
+                    (nombre, valor, id))
+        conn.commit()
+        conn.close()
+        
+        flash(f'Gasto actualizado correctamente', 'success')
+        return redirect(url_for('viabilidad_tecnica'))
+    
+    # GET: Mostrar formulario de edición
+    gasto = conn.execute('SELECT * FROM gastos WHERE id = ?', (id,)).fetchone()
+    conn.close()
+    
+    if not gasto:
+        flash('Gasto no encontrado', 'error')
+        return redirect(url_for('viabilidad_tecnica'))
+    
+    return render_template('componentes/modal_editar_gasto.html', gasto=gasto)
+
+@app.route('/proyecto/eliminar-gasto/<int:id>')
+def eliminar_gasto(id):
+    conn = get_db_connection()
+    
+    gasto = conn.execute('SELECT * FROM gastos WHERE id = ?', (id,)).fetchone()
+    if gasto:
+        conn.execute('DELETE FROM gastos WHERE id = ?', (id,))
+        conn.commit()
+        flash(f'Gasto "{gasto["nombre"]}" eliminado correctamente', 'success')
+    
+    conn.close()
+    return redirect(url_for('viabilidad_tecnica'))
+
+# ... (mantén las demás rutas como están)
+
+# ... (después de las funciones de gastos)
+
+# ==================== VIABILIDAD OPERATIVA ====================
+
+# Ruta principal de viabilidad operativa
+@app.route('/proyecto/viabilidad-operativa')
+def viabilidad_operativa():
+    conn = get_db_connection()
+    
+    # Obtener el proyecto actual
+    proyecto = conn.execute('SELECT * FROM proyectos ORDER BY id DESC LIMIT 1').fetchone()
+    
+    # Obtener personal del proyecto
+    personal = []
+    total_salarios = 0
+    if proyecto:
+        personal = conn.execute('SELECT * FROM personal WHERE proyecto_id = ? ORDER BY id', 
+                               (proyecto['id'],)).fetchall()
+        total_salarios_result = conn.execute('SELECT SUM(salario_mensual) as total FROM personal WHERE proyecto_id = ?', 
+                                           (proyecto['id'],)).fetchone()
+        total_salarios = total_salarios_result['total'] or 0
+    
+    # Obtener costos y gastos para el resumen
+    total_costos = 0
+    total_gastos = 0
+    if proyecto:
+        total_costos = conn.execute('SELECT SUM(valor) as total FROM costos WHERE proyecto_id = ?', 
+                                   (proyecto['id'],)).fetchone()['total'] or 0
+        total_gastos = conn.execute('SELECT SUM(valor) as total FROM gastos WHERE proyecto_id = ?', 
+                                   (proyecto['id'],)).fetchone()['total'] or 0
+    
+    conn.close()
+    
+    return render_template('proyecto/viabilidad_operativa.html', 
+                         proyecto=proyecto, 
+                         personal=personal,
+                         total_salarios=total_salarios,
+                         total_costos=total_costos,
+                         total_gastos=total_gastos)
+
+# CRUD para Personal
+@app.route('/proyecto/agregar-personal', methods=['POST'])
+def agregar_personal():
+    if request.method == 'POST':
+        nombre = request.form.get('nombre_personal')
+        perfil = request.form.get('perfil_personal')
+        salario_mensual = float(request.form.get('salario_mensual', 0))
+        
+        conn = get_db_connection()
+        proyecto = conn.execute('SELECT * FROM proyectos ORDER BY id DESC LIMIT 1').fetchone()
+        
+        if proyecto:
+            conn.execute('INSERT INTO personal (proyecto_id, nombre, perfil, salario_mensual) VALUES (?, ?, ?, ?)',
+                        (proyecto['id'], nombre, perfil, salario_mensual))
+            conn.commit()
+            flash(f'Personal "{nombre}" agregado correctamente', 'success')
+        else:
+            flash('Primero debes crear un proyecto', 'warning')
+        
+        conn.close()
+    
+    return redirect(url_for('viabilidad_operativa'))
+
+@app.route('/proyecto/editar-personal/<int:id>', methods=['GET', 'POST'])
+def editar_personal(id):
+    conn = get_db_connection()
+    
+    if request.method == 'POST':
+        nombre = request.form.get('nombre_personal')
+        perfil = request.form.get('perfil_personal')
+        salario_mensual = float(request.form.get('salario_mensual', 0))
+        
+        conn.execute('UPDATE personal SET nombre = ?, perfil = ?, salario_mensual = ? WHERE id = ?',
+                    (nombre, perfil, salario_mensual, id))
+        conn.commit()
+        conn.close()
+        
+        flash(f'Personal actualizado correctamente', 'success')
+        return redirect(url_for('viabilidad_operativa'))
+    
+    # GET: Mostrar formulario de edición
+    persona = conn.execute('SELECT * FROM personal WHERE id = ?', (id,)).fetchone()
+    conn.close()
+    
+    if not persona:
+        flash('Personal no encontrado', 'error')
+        return redirect(url_for('viabilidad_operativa'))
+    
+    return render_template('componentes/modal_editar_personal.html', persona=persona)
+
+@app.route('/proyecto/eliminar-personal/<int:id>')
+def eliminar_personal(id):
+    conn = get_db_connection()
+    
+    persona = conn.execute('SELECT * FROM personal WHERE id = ?', (id,)).fetchone()
+    if persona:
+        conn.execute('DELETE FROM personal WHERE id = ?', (id,))
+        conn.commit()
+        flash(f'Personal "{persona["nombre"]}" eliminado correctamente', 'success')
+    
+    conn.close()
+    return redirect(url_for('viabilidad_operativa'))
+
+# ... (continuamos después)
+
+# ... (después de las funciones de personal)
+
+# ==================== EQUIPO Y MAQUINARIA ====================
+
+# Ruta principal de equipo y maquinaria
+@app.route('/proyecto/equipo-maquinaria')
+def equipo_maquinaria():
+    conn = get_db_connection()
+    
+    # Obtener el proyecto actual
+    proyecto = conn.execute('SELECT * FROM proyectos ORDER BY id DESC LIMIT 1').fetchone()
+    
+    # Obtener materiales del proyecto
+    materiales = []
+    total_materiales = 0
+    if proyecto:
+        materiales = conn.execute('SELECT * FROM materiales WHERE proyecto_id = ? ORDER BY id', 
+                                 (proyecto['id'],)).fetchall()
+        total_materiales_result = conn.execute('SELECT SUM(valor) as total FROM materiales WHERE proyecto_id = ?', 
+                                             (proyecto['id'],)).fetchone()
+        total_materiales = total_materiales_result['total'] or 0
+    
+    # Obtener totales acumulados
+    total_costos = 0
+    total_gastos = 0
+    total_salarios = 0
+    if proyecto:
+        total_costos = conn.execute('SELECT SUM(valor) as total FROM costos WHERE proyecto_id = ?', 
+                                   (proyecto['id'],)).fetchone()['total'] or 0
+        total_gastos = conn.execute('SELECT SUM(valor) as total FROM gastos WHERE proyecto_id = ?', 
+                                   (proyecto['id'],)).fetchone()['total'] or 0
+        total_salarios = conn.execute('SELECT SUM(salario_mensual) as total FROM personal WHERE proyecto_id = ?', 
+                                     (proyecto['id'],)).fetchone()['total'] or 0
+    
+    conn.close()
+    
+    return render_template('proyecto/equipo_maquinaria.html', 
+                         proyecto=proyecto, 
+                         materiales=materiales,
+                         total_materiales=total_materiales,
+                         total_costos=total_costos,
+                         total_gastos=total_gastos,
+                         total_salarios=total_salarios)
+
+# CRUD para Materiales
+@app.route('/proyecto/agregar-material', methods=['POST'])
+def agregar_material():
+    if request.method == 'POST':
+        nombre = request.form.get('nombre_material')
+        valor = float(request.form.get('valor_material', 0))
+        
+        conn = get_db_connection()
+        proyecto = conn.execute('SELECT * FROM proyectos ORDER BY id DESC LIMIT 1').fetchone()
+        
+        if proyecto:
+            conn.execute('INSERT INTO materiales (proyecto_id, nombre, valor) VALUES (?, ?, ?)',
+                        (proyecto['id'], nombre, valor))
+            conn.commit()
+            flash(f'Material "{nombre}" agregado correctamente', 'success')
+        else:
+            flash('Primero debes crear un proyecto', 'warning')
+        
+        conn.close()
+    
+    return redirect(url_for('equipo_maquinaria'))
+
+@app.route('/proyecto/editar-material/<int:id>', methods=['GET', 'POST'])
+def editar_material(id):
+    conn = get_db_connection()
+    
+    if request.method == 'POST':
+        nombre = request.form.get('nombre_material')
+        valor = float(request.form.get('valor_material', 0))
+        
+        conn.execute('UPDATE materiales SET nombre = ?, valor = ? WHERE id = ?',
+                    (nombre, valor, id))
+        conn.commit()
+        conn.close()
+        
+        flash(f'Material actualizado correctamente', 'success')
+        return redirect(url_for('equipo_maquinaria'))
+    
+    # GET: Mostrar formulario de edición
+    material = conn.execute('SELECT * FROM materiales WHERE id = ?', (id,)).fetchone()
+    conn.close()
+    
+    if not material:
+        flash('Material no encontrado', 'error')
+        return redirect(url_for('equipo_maquinaria'))
+    
+    return render_template('componentes/modal_editar_material.html', material=material)
+
+@app.route('/proyecto/eliminar-material/<int:id>')
+def eliminar_material(id):
+    conn = get_db_connection()
+    
+    material = conn.execute('SELECT * FROM materiales WHERE id = ?', (id,)).fetchone()
+    if material:
+        conn.execute('DELETE FROM materiales WHERE id = ?', (id,))
+        conn.commit()
+        flash(f'Material "{material["nombre"]}" eliminado correctamente', 'success')
+    
+    conn.close()
+    return redirect(url_for('equipo_maquinaria'))
+
+# ... (continuamos después)
+
+# ... (después de las funciones de materiales)
+
+# ==================== FLUJOS DE CAJA ====================
+
+# Ruta principal de flujos de caja
+@app.route('/proyecto/flujos-caja')
+def flujos_caja():
+    conn = get_db_connection()
+    
+    # Obtener el proyecto actual
+    proyecto = conn.execute('SELECT * FROM proyectos ORDER BY id DESC LIMIT 1').fetchone()
+    
+    # Obtener todos los totales acumulados
+    totales = {
+        'costos': 0,
+        'gastos': 0,
+        'salarios': 0,
+        'materiales': 0
+    }
+    
+    if proyecto:
+        # Costos
+        total_costos = conn.execute('SELECT SUM(valor) as total FROM costos WHERE proyecto_id = ?', 
+                                   (proyecto['id'],)).fetchone()
+        totales['costos'] = total_costos['total'] or 0
+        
+        # Gastos
+        total_gastos = conn.execute('SELECT SUM(valor) as total FROM gastos WHERE proyecto_id = ?', 
+                                   (proyecto['id'],)).fetchone()
+        totales['gastos'] = total_gastos['total'] or 0
+        
+        # Personal
+        total_salarios = conn.execute('SELECT SUM(salario_mensual) as total FROM personal WHERE proyecto_id = ?', 
+                                     (proyecto['id'],)).fetchone()
+        totales['salarios'] = total_salarios['total'] or 0
+        
+        # Materiales
+        total_materiales = conn.execute('SELECT SUM(valor) as total FROM materiales WHERE proyecto_id = ?', 
+                                       (proyecto['id'],)).fetchone()
+        totales['materiales'] = total_materiales['total'] or 0
+        
+        # Obtener ventas por día si existen
+        ventas_dias = conn.execute('SELECT * FROM ventas_dias WHERE proyecto_id = ?', 
+                                  (proyecto['id'],)).fetchone()
+        
+        # Obtener ventas por semana si existen
+        ventas_semanas = conn.execute('SELECT * FROM ventas_semanas WHERE proyecto_id = ?', 
+                                     (proyecto['id'],)).fetchone()
+        
+        # Obtener ventas por mes si existen
+        ventas_meses = conn.execute('SELECT * FROM ventas_meses WHERE proyecto_id = ?', 
+                                   (proyecto['id'],)).fetchone()
+        
+        # Obtener ventas por año si existen
+        ventas_anos = conn.execute('SELECT * FROM ventas_anos WHERE proyecto_id = ?', 
+                                  (proyecto['id'],)).fetchone()
+    
+    conn.close()
+    
+    return render_template('proyecto/flujos_caja.html', 
+                         proyecto=proyecto,
+                         totales=totales,
+                         ventas_dias=ventas_dias if proyecto and ventas_dias else None,
+                         ventas_semanas=ventas_semanas if proyecto and ventas_semanas else None,
+                         ventas_meses=ventas_meses if proyecto and ventas_meses else None,
+                         ventas_anos=ventas_anos if proyecto and ventas_anos else None)
+
+# Guardar ventas por día
+@app.route('/proyecto/guardar-ventas-dias', methods=['POST'])
+def guardar_ventas_dias():
+    conn = get_db_connection()
+    proyecto = conn.execute('SELECT * FROM proyectos ORDER BY id DESC LIMIT 1').fetchone()
+    
+    if not proyecto:
+        flash('Primero debes crear un proyecto', 'warning')
+        conn.close()
+        return redirect(url_for('flujos_caja'))
+    
+    # Obtener datos del formulario
+    datos = {
+        'lunes': int(request.form.get('lunes', 0)),
+        'martes': int(request.form.get('martes', 0)),
+        'miercoles': int(request.form.get('miercoles', 0)),
+        'jueves': int(request.form.get('jueves', 0)),
+        'viernes': int(request.form.get('viernes', 0)),
+        'sabado': int(request.form.get('sabado', 0)),
+        'domingo': int(request.form.get('domingo', 0))
+    }
+    
+    # Verificar si ya existe registro
+    existente = conn.execute('SELECT * FROM ventas_dias WHERE proyecto_id = ?', 
+                            (proyecto['id'],)).fetchone()
+    
+    if existente:
+        # Actualizar
+        conn.execute('''
+            UPDATE ventas_dias SET 
+            lunes = ?, martes = ?, miercoles = ?, jueves = ?, 
+            viernes = ?, sabado = ?, domingo = ?
+            WHERE proyecto_id = ?
+        ''', (datos['lunes'], datos['martes'], datos['miercoles'], datos['jueves'],
+              datos['viernes'], datos['sabado'], datos['domingo'], proyecto['id']))
+    else:
+        # Insertar nuevo
+        conn.execute('''
+            INSERT INTO ventas_dias 
+            (proyecto_id, lunes, martes, miercoles, jueves, viernes, sabado, domingo)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (proyecto['id'], datos['lunes'], datos['martes'], datos['miercoles'], 
+              datos['jueves'], datos['viernes'], datos['sabado'], datos['domingo']))
+    
+    conn.commit()
+    conn.close()
+    
+    flash('Ventas por día guardadas correctamente', 'success')
+    return redirect(url_for('flujos_caja'))
+
+# Guardar ventas por semana
+@app.route('/proyecto/guardar-ventas-semanas', methods=['POST'])
+def guardar_ventas_semanas():
+    conn = get_db_connection()
+    proyecto = conn.execute('SELECT * FROM proyectos ORDER BY id DESC LIMIT 1').fetchone()
+    
+    if not proyecto:
+        flash('Primero debes crear un proyecto', 'warning')
+        conn.close()
+        return redirect(url_for('flujos_caja'))
+    
+    # Obtener datos del formulario
+    datos = {
+        'semana1': int(request.form.get('semana1', 0)),
+        'semana2': int(request.form.get('semana2', 0)),
+        'semana3': int(request.form.get('semana3', 0)),
+        'semana4': int(request.form.get('semana4', 0))
+    }
+    
+    # Verificar si ya existe registro
+    existente = conn.execute('SELECT * FROM ventas_semanas WHERE proyecto_id = ?', 
+                            (proyecto['id'],)).fetchone()
+    
+    if existente:
+        # Actualizar
+        conn.execute('''
+            UPDATE ventas_semanas SET 
+            semana1 = ?, semana2 = ?, semana3 = ?, semana4 = ?
+            WHERE proyecto_id = ?
+        ''', (datos['semana1'], datos['semana2'], datos['semana3'], 
+              datos['semana4'], proyecto['id']))
+    else:
+        # Insertar nuevo
+        conn.execute('''
+            INSERT INTO ventas_semanas 
+            (proyecto_id, semana1, semana2, semana3, semana4)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (proyecto['id'], datos['semana1'], datos['semana2'], 
+              datos['semana3'], datos['semana4']))
+    
+    conn.commit()
+    conn.close()
+    
+    flash('Ventas por semana guardadas correctamente', 'success')
+    return redirect(url_for('flujos_caja'))
+
+# Guardar ventas por mes (similar a los anteriores)
+@app.route('/proyecto/guardar-ventas-meses', methods=['POST'])
+def guardar_ventas_meses():
+    conn = get_db_connection()
+    proyecto = conn.execute('SELECT * FROM proyectos ORDER BY id DESC LIMIT 1').fetchone()
+    
+    if not proyecto:
+        flash('Primero debes crear un proyecto', 'warning')
+        conn.close()
+        return redirect(url_for('flujos_caja'))
+    
+    # Obtener datos del formulario
+    datos = {
+        'enero': int(request.form.get('enero', 0)),
+        'febrero': int(request.form.get('febrero', 0)),
+        'marzo': int(request.form.get('marzo', 0)),
+        'abril': int(request.form.get('abril', 0)),
+        'mayo': int(request.form.get('mayo', 0)),
+        'junio': int(request.form.get('junio', 0)),
+        'julio': int(request.form.get('julio', 0)),
+        'agosto': int(request.form.get('agosto', 0)),
+        'septiembre': int(request.form.get('septiembre', 0)),
+        'octubre': int(request.form.get('octubre', 0)),
+        'noviembre': int(request.form.get('noviembre', 0)),
+        'diciembre': int(request.form.get('diciembre', 0))
+    }
+    
+    # Verificar si ya existe registro
+    existente = conn.execute('SELECT * FROM ventas_meses WHERE proyecto_id = ?', 
+                            (proyecto['id'],)).fetchone()
+    
+    if existente:
+        # Actualizar (solo los primeros 7 meses como en tu Excel)
+        conn.execute('''
+            UPDATE ventas_meses SET 
+            enero = ?, febrero = ?, marzo = ?, abril = ?, 
+            mayo = ?, junio = ?, julio = ?
+            WHERE proyecto_id = ?
+        ''', (datos['enero'], datos['febrero'], datos['marzo'], datos['abril'],
+              datos['mayo'], datos['junio'], datos['julio'], proyecto['id']))
+    else:
+        # Insertar nuevo (solo los primeros 7 meses)
+        conn.execute('''
+            INSERT INTO ventas_meses 
+            (proyecto_id, enero, febrero, marzo, abril, mayo, junio, julio)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (proyecto['id'], datos['enero'], datos['febrero'], datos['marzo'], 
+              datos['abril'], datos['mayo'], datos['junio'], datos['julio']))
+    
+    conn.commit()
+    conn.close()
+    
+    flash('Ventas por mes guardadas correctamente', 'success')
+    return redirect(url_for('flujos_caja'))
+
+# Guardar ventas por año
+@app.route('/proyecto/guardar-ventas-anos', methods=['POST'])
+def guardar_ventas_anos():
+    conn = get_db_connection()
+    proyecto = conn.execute('SELECT * FROM proyectos ORDER BY id DESC LIMIT 1').fetchone()
+    
+    if not proyecto:
+        flash('Primero debes crear un proyecto', 'warning')
+        conn.close()
+        return redirect(url_for('flujos_caja'))
+    
+    # Obtener datos del formulario
+    datos = {
+        'año1': int(request.form.get('año1', 0)),
+        'año2': int(request.form.get('año2', 0)),
+        'año3': int(request.form.get('año3', 0)),
+        'año4': int(request.form.get('año4', 0)),
+        'año5': int(request.form.get('año5', 0)),
+        'año6': int(request.form.get('año6', 0)),
+        'año7': int(request.form.get('año7', 0))
+    }
+    
+    # Verificar si ya existe registro
+    existente = conn.execute('SELECT * FROM ventas_anos WHERE proyecto_id = ?', 
+                            (proyecto['id'],)).fetchone()
+    
+    if existente:
+        # Actualizar
+        conn.execute('''
+            UPDATE ventas_anos SET 
+            año1 = ?, año2 = ?, año3 = ?, año4 = ?, 
+            año5 = ?, año6 = ?, año7 = ?
+            WHERE proyecto_id = ?
+        ''', (datos['año1'], datos['año2'], datos['año3'], datos['año4'],
+              datos['año5'], datos['año6'], datos['año7'], proyecto['id']))
+    else:
+        # Insertar nuevo
+        conn.execute('''
+            INSERT INTO ventas_anos 
+            (proyecto_id, año1, año2, año3, año4, año5, año6, año7)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (proyecto['id'], datos['año1'], datos['año2'], datos['año3'], 
+              datos['año4'], datos['año5'], datos['año6'], datos['año7']))
+    
+    conn.commit()
+    conn.close()
+    
+    flash('Ventas por año guardadas correctamente', 'success')
+    return redirect(url_for('flujos_caja'))
+
+# ... (continuaremos con los cálculos financieros)
+
+# ... (después de todas las funciones anteriores)
+
+# ==================== CÁLCULOS FINANCIEROS ====================
+
+# Función para calcular VAN (Valor Actual Neto)
+def calcular_van(tasa_descuento, flujos):
+    """
+    Calcula el VAN dado una tasa de descuento y una lista de flujos.
+    El primer flujo es la inversión inicial (negativo).
+    """
+    van = 0
+    for i, flujo in enumerate(flujos):
+        van += flujo / ((1 + tasa_descuento) ** i)
+    return van
+
+# Función para calcular TIR (Tasa Interna de Retorno)
+def calcular_tir(flujos, iteraciones=1000, precision=0.0001):
+    """
+    Calcula la TIR usando el método de Newton-Raphson simplificado.
+    """
+    # Función para calcular VAN con tasa dada
+    def van_con_tasa(tasa):
+        total = 0
+        for i, flujo in enumerate(flujos):
+            total += flujo / ((1 + tasa) ** i)
+        return total
+    
+    # Método de bisección (más simple y estable)
+    tasa_min = -0.99  # -99%
+    tasa_max = 10.0   # 1000% (muy alto por si acaso)
+    
+    van_min = van_con_tasa(tasa_min)
+    van_max = van_con_tasa(tasa_max)
+    
+    # Si tienen el mismo signo, no hay solución
+    if van_min * van_max > 0:
+        return None
+    
+    # Búsqueda binaria
+    for _ in range(iteraciones):
+        tasa_media = (tasa_min + tasa_max) / 2
+        van_media = van_con_tasa(tasa_media)
+        
+        if abs(van_media) < precision:
+            return tasa_media
+        
+        if van_min * van_media < 0:
+            tasa_max = tasa_media
+            van_max = van_media
+        else:
+            tasa_min = tasa_media
+            van_min = van_media
+    
+    return (tasa_min + tasa_max) / 2
+
+# Función para calcular relación Beneficio/Costo
+def calcular_bc(flujos, tasa_descuento):
+    """
+    Calcula la relación Beneficio/Costo.
+    """
+    beneficios_pv = 0  # Valor presente de beneficios
+    costos_pv = 0      # Valor presente de costos
+    
+    for i, flujo in enumerate(flujos):
+        if flujo > 0:
+            beneficios_pv += flujo / ((1 + tasa_descuento) ** i)
+        else:
+            costos_pv += abs(flujo) / ((1 + tasa_descuento) ** i)
+    
+    if costos_pv == 0:
+        return float('inf')  # Infinito si no hay costos
+    
+    return beneficios_pv / costos_pv
+
+# Función para calcular PRI (Periodo de Recuperación de la Inversión)
+def calcular_pri(flujos):
+    """
+    Calcula el Periodo de Recuperación de la Inversión.
+    """
+    inversion_inicial = abs(flujos[0]) if flujos[0] < 0 else 0
+    acumulado = 0
+    
+    for i, flujo in enumerate(flujos):
+        if i == 0:  # Saltar la inversión inicial
+            continue
+        
+        acumulado += flujo
+        
+        if acumulado >= inversion_inicial:
+            # Interpolación lineal para mayor precisión
+            flujo_anterior = flujos[i-1] if i > 1 else 0
+            faltante_antes = inversion_inicial - (acumulado - flujo)
+            proporcion = faltante_antes / flujo if flujo != 0 else 0
+            
+            return (i - 1) + proporcion
+    
+    return None  # No se recupera la inversión
+
+# Ruta para resultados financieros
+@app.route('/resultados/calculos-financieros')
+def calculos_financieros():
+    conn = get_db_connection()
+    
+    # Obtener el proyecto actual
+    proyecto = conn.execute('SELECT * FROM proyectos ORDER BY id DESC LIMIT 1').fetchone()
+    
+    if not proyecto:
+        flash('Primero debes crear un proyecto', 'warning')
+        conn.close()
+        return redirect(url_for('index'))
+    
+    # Obtener todos los datos necesarios
+    resultados = {
+        'proyecto': proyecto,
+        'totales': {},
+        'flujos': [],
+        'calculos': {}
+    }
+    
+    # Obtener totales
+    # Costos
+    total_costos = conn.execute('SELECT SUM(valor) as total FROM costos WHERE proyecto_id = ?', 
+                               (proyecto['id'],)).fetchone()
+    resultados['totales']['costos'] = total_costos['total'] or 0
+    
+    # Gastos
+    total_gastos = conn.execute('SELECT SUM(valor) as total FROM gastos WHERE proyecto_id = ?', 
+                               (proyecto['id'],)).fetchone()
+    resultados['totales']['gastos'] = total_gastos['total'] or 0
+    
+    # Personal
+    total_salarios = conn.execute('SELECT SUM(salario_mensual) as total FROM personal WHERE proyecto_id = ?', 
+                                 (proyecto['id'],)).fetchone()
+    resultados['totales']['salarios'] = total_salarios['total'] or 0
+    
+    # Materiales
+    total_materiales = conn.execute('SELECT SUM(valor) as total FROM materiales WHERE proyecto_id = ?', 
+                                   (proyecto['id'],)).fetchone()
+    resultados['totales']['materiales'] = total_materiales['total'] or 0
+    
+    # Inversión inicial
+    inversion_inicial = proyecto['valor_inversion'] if proyecto['tiene_inversion'] == 1 else 0
+    
+    # Obtener ventas por año para flujos
+    ventas_anos = conn.execute('SELECT * FROM ventas_anos WHERE proyecto_id = ?', 
+                              (proyecto['id'],)).fetchone()
+    
+    conn.close()
+    
+    # Construir flujos de caja para 7 años
+    flujos_anuales = []
+    
+    # Año 0: Inversión inicial (negativa)
+    flujos_anuales.append(-inversion_inicial)
+    
+    # Años 1-7: Flujos netos
+    if ventas_anos:
+        # Calcular ingresos anuales
+        for i in range(1, 8):
+            ventas_key = f'año{i}'
+            ventas = getattr(ventas_anos, ventas_key, 0) or 0
+            ingresos_anuales = ventas * proyecto['precio_producto']
+            
+            # Calcular flujo neto (ingresos - costos - gastos - salarios anualizados)
+            # Suponemos que costos y gastos se distribuyen anualmente
+            costo_anual = resultados['totales']['costos'] / 7  # Distribuido en 7 años
+            gasto_anual = resultados['totales']['gastos'] / 7
+            salario_anual = resultados['totales']['salarios'] * 12  # Salarios anuales
+            
+            flujo_neto = ingresos_anuales - costo_anual - gasto_anual - salario_anual
+            flujos_anuales.append(flujo_neto)
+    else:
+        # Valores por defecto si no hay ventas registradas
+        for i in range(7):
+            flujos_anuales.append(0)  # Flujos cero
+    
+    # Realizar cálculos financieros
+    tasa_descuento = proyecto['tasa_descuento']
+    
+    try:
+        # VAN
+        van = calcular_van(tasa_descuento, flujos_anuales)
+        resultados['calculos']['van'] = van
+        
+        # TIR
+        tir = calcular_tir(flujos_anuales)
+        resultados['calculos']['tir'] = tir * 100 if tir else None  # Convertir a porcentaje
+        
+        # B/C
+        bc = calcular_bc(flujos_anuales, tasa_descuento)
+        resultados['calculos']['bc'] = bc
+        
+        # PRI
+        pri = calcular_pri(flujos_anuales)
+        resultados['calculos']['pri'] = pri
+        
+        # Otros indicadores
+        resultados['calculos']['flujos'] = flujos_anuales
+        resultados['calculos']['inversion_total'] = (
+            inversion_inicial + 
+            resultados['totales']['costos'] + 
+            resultados['totales']['gastos'] + 
+            resultados['totales']['salarios'] * 12 * 7 +  # 7 años de salarios
+            resultados['totales']['materiales']
+        )
+        
+        # Rentabilidad
+        if inversion_inicial > 0:
+            resultados['calculos']['rentabilidad'] = (van / inversion_inicial) * 100
+        else:
+            resultados['calculos']['rentabilidad'] = 0
+            
+    except Exception as e:
+        resultados['calculos']['error'] = f"Error en cálculos: {str(e)}"
+        resultados['calculos']['van'] = 0
+        resultados['calculos']['tir'] = 0
+        resultados['calculos']['bc'] = 0
+        resultados['calculos']['pri'] = 0
+    
+    return render_template('resultados/calculos_financieros.html', resultados=resultados)
+
+# Ruta para limpiar todos los datos (opcional, para pruebas)
+@app.route('/limpiar-datos')
+def limpiar_datos():
+    conn = get_db_connection()
+    
+    # Eliminar todos los datos excepto proyectos
+    conn.execute('DELETE FROM costos')
+    conn.execute('DELETE FROM gastos')
+    conn.execute('DELETE FROM personal')
+    conn.execute('DELETE FROM materiales')
+    conn.execute('DELETE FROM ventas_dias')
+    conn.execute('DELETE FROM ventas_semanas')
+    conn.execute('DELETE FROM ventas_meses')
+    conn.execute('DELETE FROM ventas_anos')
+    
+    conn.commit()
+    conn.close()
+    
+    flash('Todos los datos han sido limpiados (excepto el proyecto)', 'warning')
+    return redirect(url_for('index'))
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)
+
+proyecto_pep/venv
+(este es un venv no creo que sea necesario pasar codigo o carpetas ya que se crea por defecto para correr el python)
+
+proyecto_pep/config.py:
+import os
+from dotenv import load_dotenv
+
+# Cargar variables del archivo .env
+load_dotenv()
+
+class Config:
+    # Configuración básica
+    SECRET_KEY = os.getenv('SECRET_KEY', 'clave_por_defecto_segura')
+    
+    # Configuración de base de datos SQLite
+    BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+    DATABASE_PATH = os.path.join(BASE_DIR, 'database', 'proyecto_pep.db')
+    SQLALCHEMY_DATABASE_URI = f'sqlite:///{DATABASE_PATH}'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    
+    # Configuraciones de la aplicación
+    DEBUG = os.getenv('FLASK_ENV') == 'development'
+
+proyecto_pep/requirements.txt
+Flask==2.3.3
+
+

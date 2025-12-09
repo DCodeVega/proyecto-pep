@@ -1,0 +1,33 @@
+<div class="modal fade" id="modalEditarPersonal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title">Editar Personal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST" action="{{ url_for('editar_personal', id=persona.id) }}">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nombre_personal" class="form-label">Nombre:</label>
+                        <input type="text" class="form-control" id="nombre_personal" 
+                               name="nombre_personal" value="{{ persona.nombre }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="perfil_personal" class="form-label">Perfil:</label>
+                        <textarea class="form-control" id="perfil_personal" 
+                                  name="perfil_personal" rows="3">{{ persona.perfil }}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="salario_mensual" class="form-label">Salario Mensual:</label>
+                        <input type="number" class="form-control" id="salario_mensual" 
+                               name="salario_mensual" value="{{ persona.salario_mensual }}" step="0.01" min="0" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-warning">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

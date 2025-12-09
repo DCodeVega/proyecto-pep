@@ -1,0 +1,286 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <!-- Encabezado -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">👥 TERCERA FASE: Viabilidad Operativa</h2>
+            {% if proyecto %}
+            <div>
+                <span class="badge bg-primary">Proyecto: {{ proyecto.nombre }}</span>
+                <span class="badge bg-warning">Opcional</span>
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Información del Excel -->
+        <div class="alert alert-info mb-4">
+            <h5 class="alert-heading">ℹ️ Como en tu Excel:</h5>
+            <p class="mb-0">Esta sección corresponde a la <strong>"TERCERA FASE: Viabilidad Operativa (opcional)"</strong> de tu archivo Excel. 
+            Aquí gestionas el personal necesario para el proyecto, sus perfiles y salarios mensuales.</p>
+        </div>
+
+        <!-- Advertencia si no hay proyecto -->
+        {% if not proyecto %}
+        <div class="alert alert-warning">
+            <h5>⚠️ Primero debes crear un proyecto</h5>
+            <p>Para gestionar personal, primero necesitas crear un proyecto en la sección "Datos Iniciales".</p>
+            <a href="{{ url_for('datos_iniciales') }}" class="btn btn-warning">Ir a Datos Iniciales →</a>
+        </div>
+        {% else %}
+        
+        <!-- Formulario para agregar personal -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0">PERSONAL y perfil</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('agregar_personal') }}">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label for="nombre_personal" class="form-label">
+                                <strong>PERSONAL</strong>
+                            </label>
+                            <input type="text" class="form-control" id="nombre_personal" 
+                                   name="nombre_personal" placeholder="Ej: Técnico Superior hardware" required>
+                            <div class="form-text">
+                                <small>Nombre del miembro del personal</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="perfil_personal" class="form-label">
+                                <strong>PERFIL:</strong>
+                            </label>
+                            <textarea class="form-control" id="perfil_personal" 
+                                      name="perfil_personal" rows="2" 
+                                      placeholder="(descripcion larga)"></textarea>
+                            <div class="form-text">
+                                <small>Descripción del perfil y responsabilidades</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="salario_mensual" class="form-label">
+                                <strong>SALARIO por MES:</strong>
+                            </label>
+                            <input type="number" class="form-control" id="salario_mensual" 
+                                   name="salario_mensual" step="0.01" min="0" required>
+                            <div class="form-text">
+                                <small>Salario mensual en $</small>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-warning w-100">
+                                ➕ añadir personal
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tabla de personal -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">Lista de Personal</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th width="50">Nro</th>
+                                <th>Lista de Personal</th>
+                                <th>lista de perfil</th>
+                                <th width="120">Salario por MES</th>
+                                <th width="150" class="text-center">opcion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for persona in personal %}
+                            <tr>
+                                <td class="text-center">{{ loop.index }}</td>
+                                <td>{{ persona.nombre }}</td>
+                                <td>
+                                    {% if persona.perfil %}
+                                    <small>{{ persona.perfil }}</small>
+                                    {% else %}
+                                    <span class="text-muted">Sin descripción</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-end">$ {{ persona.salario_mensual|round(2) }}</td>
+                                <td class="text-center">
+                                    <!-- Botón para editar (abrirá modal) -->
+                                    <button type="button" class="btn btn-sm btn-outline-warning" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#modalEditarPersonal{{ persona.id }}">
+                                        Editar
+                                    </button>
+                                    <a href="{{ url_for('eliminar_personal', id=persona.id) }}" 
+                                       class="btn btn-sm btn-outline-danger"
+                                       onclick="return confirm('¿Seguro que quieres eliminar este personal?')">
+                                        Eliminar
+                                    </a>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center text-muted">
+                                    No hay personal registrado. Agrega tu primer miembro del equipo.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot class="table-secondary">
+                            <tr>
+                                <td colspan="3" class="text-end"><strong>TOTAL Operativo:</strong></td>
+                                <td class="text-end"><strong>$ {{ total_salarios|round(2) }}</strong></td>
+                                <td class="text-center">
+                                    <small>Nro personal: {{ personal|length }}</small>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resumen de todas las fases -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0">📊 DATOS PREVIOS</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <!-- Datos del proyecto -->
+                    <div class="col-md-4">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>PROYECTO:</th>
+                                <td>{{ proyecto.nombre }}</td>
+                            </tr>
+                            <tr>
+                                <th>Actividad:</th>
+                                <td>{{ proyecto.tipo_actividad }}</td>
+                            </tr>
+                            <tr>
+                                <th>Inversión:</th>
+                                <td>{{ 'Sí' if proyecto.tiene_inversion == 1 else 'No' }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-4">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Tasa:</th>
+                                <td>{{ (proyecto.tasa_descuento * 100)|round(3) }}%</td>
+                            </tr>
+                            <tr>
+                                <th>Producto:</th>
+                                <td>{{ proyecto.nombre_producto }}</td>
+                            </tr>
+                            <tr>
+                                <th>Precio:</th>
+                                <td>$ {{ proyecto.precio_producto|round(2) }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <!-- Totales acumulados -->
+                    <div class="col-md-4">
+                        <div class="card bg-light h-100">
+                            <div class="card-body">
+                                <h6 class="card-title text-center mb-3">TOTALES ACUMULADOS</h6>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Costos:</span>
+                                    <strong class="text-success">$ {{ total_costos|round(2) }}</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Gastos:</span>
+                                    <strong class="text-warning">$ {{ total_gastos|round(2) }}</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <span>Salarios:</span>
+                                    <strong class="text-danger">$ {{ total_salarios|round(2) }}</strong>
+                                </div>
+                                <hr>
+                                <div class="d-flex justify-content-between">
+                                    <strong>Total General:</strong>
+                                    <strong>$ {{ (total_costos + total_gastos + total_salarios)|round(2) }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botones de navegación -->
+        <div class="d-flex justify-content-between mt-4">
+            <div>
+                <a href="{{ url_for('viabilidad_tecnica') }}" class="btn btn-outline-secondary">
+                    ← Volver: viabilidad tecnica
+                </a>
+            </div>
+            <div>
+                <a href="{{ url_for('equipo_maquinaria') }}" class="btn btn-primary">
+                    Siguiente: Equipo y maquinaria →
+                </a>
+            </div>
+        </div>
+        
+        {% endif %} <!-- Fin del if proyecto -->
+    </div>
+</div>
+
+<!-- Modales para editar personal -->
+{% for persona in personal %}
+<div class="modal fade" id="modalEditarPersonal{{ persona.id }}" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title">Editar Personal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST" action="{{ url_for('editar_personal', id=persona.id) }}">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nombre_personal_{{ persona.id }}" class="form-label">Nombre:</label>
+                        <input type="text" class="form-control" id="nombre_personal_{{ persona.id }}" 
+                               name="nombre_personal" value="{{ persona.nombre }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="perfil_personal_{{ persona.id }}" class="form-label">Perfil:</label>
+                        <textarea class="form-control" id="perfil_personal_{{ persona.id }}" 
+                                  name="perfil_personal" rows="3">{{ persona.perfil }}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="salario_mensual_{{ persona.id }}" class="form-label">Salario Mensual:</label>
+                        <input type="number" class="form-control" id="salario_mensual_{{ persona.id }}" 
+                               name="salario_mensual" value="{{ persona.salario_mensual }}" step="0.01" min="0" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-warning">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Formatear salario al perder foco
+    document.querySelectorAll('input[name="salario_mensual"]').forEach(input => {
+        input.addEventListener('blur', function() {
+            let valor = parseFloat(this.value);
+            if (!isNaN(valor)) {
+                this.value = valor.toFixed(2); // 2 decimales
+            }
+        });
+    });
+</script>
+{% endblock %}

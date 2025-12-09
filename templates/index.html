@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="text-center mb-5">
+            <h1 class="display-4">📊 Proyecto PEP</h1>
+            <p class="lead">Sistema de Preparación y Evaluación de Proyectos</p>
+            <p class="text-muted">Desarrollado con Flask • Similar a tu estructura de Excel</p>
+        </div>
+
+        <!-- Tarjetas de las fases del proyecto -->
+        <div class="row g-4">
+            <!-- Fase 1: Datos Iniciales -->
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">1. Datos Iniciales</h5>
+                        <p class="card-text">
+                            Ingresa la información básica del proyecto: nombre, actividad, 
+                            inversión inicial, tasa de descuento, producto y precio.
+                        </p>
+                        <a href="{{ url_for('datos_iniciales') }}" class="btn btn-primary">
+                            Comenzar aquí
+                        </a>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <small class="text-muted">PRIMERA FASE en tu Excel</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fase 2: Viabilidad Técnica -->
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-success">2. Viabilidad Técnica</h5>
+                        <p class="card-text">
+                            Gestiona costos y gastos del proyecto con sistema CRUD completo.
+                        </p>
+                        <a href="{{ url_for('viabilidad_tecnica') }}" class="btn btn-success">
+                            Gestionar Costos y Gastos
+                        </a>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <small class="text-muted">SEGUNDA FASE en tu Excel</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fase 3: Viabilidad Operativa -->
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-warning">3. Viabilidad Operativa</h5>
+                        <p class="card-text">
+                            Administra el personal necesario, perfiles y salarios mensuales.
+                        </p>
+                        <a href="{{ url_for('viabilidad_operativa') }}" class="btn btn-warning">
+                            Gestionar Personal
+                        </a>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <small class="text-muted">TERCERA FASE en tu Excel</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fase 4: Equipo y Maquinaria -->
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-info">4. Equipo y Maquinaria</h5>
+                        <p class="card-text">
+                            Registra materiales, equipos e inversiones necesarias para el proyecto.
+                        </p>
+                        <a href="{{ url_for('equipo_maquinaria') }}" class="btn btn-info">
+                            Gestionar Materiales
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fase 5: Flujos de Caja -->
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-purple">5. Flujos de Caja</h5>
+                        <p class="card-text">
+                            Define ventas por día, semana, mes o año. Calcula ingresos, egresos y utilidad.
+                        </p>
+                        <a href="{{ url_for('flujos_caja') }}" class="btn btn-purple" style="background-color: #6f42c1; color: white;">
+                            Configurar Flujos
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fase 6: Resultados Financieros -->
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-danger">6. Resultados Financieros</h5>
+                        <p class="card-text">
+                            Calcula VAN, TIR, relación B/C, PRI y otros indicadores de rentabilidad.
+                        </p>
+                        <a href="{{ url_for('calculos_financieros') }}" class="btn btn-danger">
+                            Ver Resultados
+                        </a>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <small class="text-muted">Análisis completo como en tu Excel</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instrucciones -->
+        <div class="mt-5 p-4 bg-light rounded">
+            <h4>📋 Instrucciones de Uso</h4>
+            <ol class="mt-3">
+                <li>Comienza con <strong>"Datos Iniciales"</strong> para configurar tu proyecto</li>
+                <li>Sigue el orden de las fases como en tu Excel</li>
+                <li>Cada fase guarda automáticamente los datos</li>
+                <li>Puedes regresar a fases anteriores para modificar datos</li>
+                <li>Los cálculos financieros se actualizan automáticamente</li>
+            </ol>
+            <div class="alert alert-info mt-3">
+                <strong>💡 Tip:</strong> Este sistema replica la estructura de tu archivo Excel 
+                "proyecto pep 2.xlsx" pero en formato web interactivo.
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<style>
+    .btn-purple {
+        background-color: #6f42c1;
+        border-color: #6f42c1;
+        color: white;
+    }
+    .btn-purple:hover {
+        background-color: #5a32a3;
+        border-color: #5a32a3;
+        color: white;
+    }
+</style>
+{% endblock %}

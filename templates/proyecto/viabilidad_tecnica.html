@@ -1,0 +1,379 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <!-- Encabezado -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">🔧 SEGUNDA FASE: Viabilidad Técnica</h2>
+            {% if proyecto %}
+            <div>
+                <span class="badge bg-primary">Proyecto: {{ proyecto.nombre }}</span>
+                <span class="badge bg-info">Producto: {{ proyecto.nombre_producto }}</span>
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Información del Excel -->
+        <div class="alert alert-info mb-4">
+            <h5 class="alert-heading">ℹ️ Como en tu Excel:</h5>
+            <p class="mb-0">Esta sección corresponde a la <strong>"SEGUNDA FASE: Viabilidad técnica"</strong> de tu archivo Excel. 
+            Aquí gestionas los costos y gastos del proyecto con sistema CRUD (añadir, editar, eliminar).</p>
+        </div>
+
+        <!-- Advertencia si no hay proyecto -->
+        {% if not proyecto %}
+        <div class="alert alert-warning">
+            <h5>⚠️ Primero debes crear un proyecto</h5>
+            <p>Para gestionar costos y gastos, primero necesitas crear un proyecto en la sección "Datos Iniciales".</p>
+            <a href="{{ url_for('datos_iniciales') }}" class="btn btn-warning">Ir a Datos Iniciales →</a>
+        </div>
+        {% else %}
+        
+        <!-- Sección de Costos -->
+        <div class="row">
+            <!-- Columna de COSTOS -->
+            <div class="col-md-6">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">COSTOS</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Formulario para agregar costo -->
+                        <form method="POST" action="{{ url_for('agregar_costo') }}" class="mb-4">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="nombre_costo" class="form-label">
+                                        <strong>nombre del costo:</strong>
+                                    </label>
+                                    <input type="text" class="form-control" id="nombre_costo" 
+                                           name="nombre_costo" placeholder="Ej: monitor de 20 pulgadas" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="valor_costo" class="form-label">
+                                        <strong>valor o precio del costo:</strong>
+                                    </label>
+                                    <input type="number" class="form-control" id="valor_costo" 
+                                           name="valor_costo" step="0.01" min="0" required>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-success w-100">
+                                        ➕ añadir costo
+                                    </button>
+                                    <div class="form-text text-center mt-2">
+                                        <small>este será un botón que añadirá a la lista de costo</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- Tabla de costos -->
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th width="50">Nro</th>
+                                        <th>Lista de costos</th>
+                                        <th width="120">Valor</th>
+                                        <th width="150" class="text-center">opcion</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for costo in costos %}
+                                    <tr>
+                                        <td class="text-center">{{ loop.index }}</td>
+                                        <td>{{ costo.nombre }}</td>
+                                        <td class="text-end">$ {{ costo.valor|round(2) }}</td>
+                                        <td class="text-center">
+                                            <!-- Botón para editar (abrirá modal) -->
+                                            <button type="button" class="btn btn-sm btn-outline-primary" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#modalEditarCosto{{ costo.id }}">
+                                                Editar
+                                            </button>
+                                            <a href="{{ url_for('eliminar_costo', id=costo.id) }}" 
+                                               class="btn btn-sm btn-outline-danger"
+                                               onclick="return confirm('¿Seguro que quieres eliminar este costo?')">
+                                                Eliminar
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="4" class="text-center text-muted">
+                                            No hay costos registrados. Agrega tu primer costo.
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                <tfoot class="table-secondary">
+                                    <tr>
+                                        <td colspan="2" class="text-end"><strong>TOTAL COSTOS:</strong></td>
+                                        <td class="text-end"><strong>$ {{ total_costos|round(2) }}</strong></td>
+                                        <td class="text-center">
+                                            <small>Nro costos: {{ costos|length }}</small>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna de GASTOS -->
+            <div class="col-md-6">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="mb-0">GASTOS</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Formulario para agregar gasto -->
+                        <form method="POST" action="{{ url_for('agregar_gasto') }}" class="mb-4">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="nombre_gasto" class="form-label">
+                                        <strong>nombre del gasto:</strong>
+                                    </label>
+                                    <input type="text" class="form-control" id="nombre_gasto" 
+                                           name="nombre_gasto" placeholder="Ej: Alquiler del local" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="valor_gasto" class="form-label">
+                                        <strong>valor o precio del gasto:</strong>
+                                    </label>
+                                    <input type="number" class="form-control" id="valor_gasto" 
+                                           name="valor_gasto" step="0.01" min="0" required>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-warning w-100">
+                                        ➕ añadir gasto
+                                    </button>
+                                    <div class="form-text text-center mt-2">
+                                        <small>este será un botón que añadirá a la lista de gastos</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- Tabla de gastos -->
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th width="50">Nro</th>
+                                        <th>Lista de gastos</th>
+                                        <th width="120">Valor</th>
+                                        <th width="150" class="text-center">opcion</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for gasto in gastos %}
+                                    <tr>
+                                        <td class="text-center">{{ loop.index }}</td>
+                                        <td>{{ gasto.nombre }}</td>
+                                        <td class="text-end">$ {{ gasto.valor|round(2) }}</td>
+                                        <td class="text-center">
+                                            <!-- Botón para editar (abrirá modal) -->
+                                            <button type="button" class="btn btn-sm btn-outline-warning" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#modalEditarGasto{{ gasto.id }}">
+                                                Editar
+                                            </button>
+                                            <a href="{{ url_for('eliminar_gasto', id=gasto.id) }}" 
+                                               class="btn btn-sm btn-outline-danger"
+                                               onclick="return confirm('¿Seguro que quieres eliminar este gasto?')">
+                                                Eliminar
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="4" class="text-center text-muted">
+                                            No hay gastos registrados. Agrega tu primer gasto.
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                <tfoot class="table-secondary">
+                                    <tr>
+                                        <td colspan="2" class="text-end"><strong>TOTAL GASTOS:</strong></td>
+                                        <td class="text-end"><strong>$ {{ total_gastos|round(2) }}</strong></td>
+                                        <td class="text-center">
+                                            <small>Nro gastos: {{ gastos|length }}</small>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resumen Total -->
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-secondary text-white">
+                        <h5 class="mb-0">📊 DATOS PREVIOS</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th>PROYECTO:</th>
+                                        <td>{{ proyecto.nombre }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Actividad:</th>
+                                        <td>{{ proyecto.tipo_actividad }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Inversión:</th>
+                                        <td>{{ 'Sí' if proyecto.tiene_inversion == 1 else 'No' }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th>Tasa:</th>
+                                        <td>{{ (proyecto.tasa_descuento * 100)|round(3) }}%</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Producto:</th>
+                                        <td>{{ proyecto.nombre_producto }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Precio:</th>
+                                        <td>$ {{ proyecto.precio_producto|round(2) }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Totales de costos y gastos -->
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <div class="card bg-light">
+                                    <div class="card-body text-center">
+                                        <h5>TOTAL COSTOS</h5>
+                                        <h3 class="text-success">$ {{ total_costos|round(2) }}</h3>
+                                        <p class="mb-0">
+                                            <small>{{ costos|length }} costos registrados</small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card bg-light">
+                                    <div class="card-body text-center">
+                                        <h5>TOTAL GASTOS</h5>
+                                        <h3 class="text-warning">$ {{ total_gastos|round(2) }}</h3>
+                                        <p class="mb-0">
+                                            <small>{{ gastos|length }} gastos registrados</small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botones de navegación -->
+        <div class="d-flex justify-content-between mt-4">
+            <a href="{{ url_for('datos_iniciales') }}" class="btn btn-outline-secondary">
+                ← Volver a Datos Iniciales
+            </a>
+            <a href="{{ url_for('viabilidad_operativa') }}" class="btn btn-primary">
+                Siguiente: Viabilidad Operativa →
+            </a>
+        </div>
+        
+        {% endif %} <!-- Fin del if proyecto -->
+    </div>
+</div>
+
+<!-- Modales para editar costos y gastos -->
+{% for costo in costos %}
+<div class="modal fade" id="modalEditarCosto{{ costo.id }}" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">Editar Costo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST" action="{{ url_for('editar_costo', id=costo.id) }}">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nombre_costo_{{ costo.id }}" class="form-label">Nombre del costo:</label>
+                        <input type="text" class="form-control" id="nombre_costo_{{ costo.id }}" 
+                               name="nombre_costo" value="{{ costo.nombre }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="valor_costo_{{ costo.id }}" class="form-label">Valor:</label>
+                        <input type="number" class="form-control" id="valor_costo_{{ costo.id }}" 
+                               name="valor_costo" value="{{ costo.valor }}" step="0.01" min="0" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% for gasto in gastos %}
+<div class="modal fade" id="modalEditarGasto{{ gasto.id }}" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title">Editar Gasto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST" action="{{ url_for('editar_gasto', id=gasto.id) }}">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nombre_gasto_{{ gasto.id }}" class="form-label">Nombre del gasto:</label>
+                        <input type="text" class="form-control" id="nombre_gasto_{{ gasto.id }}" 
+                               name="nombre_gasto" value="{{ gasto.nombre }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="valor_gasto_{{ gasto.id }}" class="form-label">Valor:</label>
+                        <input type="number" class="form-control" id="valor_gasto_{{ gasto.id }}" 
+                               name="valor_gasto" value="{{ gasto.valor }}" step="0.01" min="0" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-warning">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Formatear valores al perder foco
+    document.querySelectorAll('input[type="number"]').forEach(input => {
+        input.addEventListener('blur', function() {
+            let valor = parseFloat(this.value);
+            if (!isNaN(valor)) {
+                this.value = valor.toFixed(2); // 2 decimales
+            }
+        });
+    });
+
+    // Confirmación antes de eliminar (ya está en el enlace)
+</script>
+{% endblock %}

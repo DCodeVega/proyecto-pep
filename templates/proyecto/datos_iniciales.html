@@ -1,0 +1,262 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-10 mx-auto">
+        <!-- Encabezado -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">📋 PRIMERA FASE: Datos Iniciales</h2>
+            {% if proyecto %}
+            <span class="badge bg-success">Proyecto: {{ proyecto.nombre }}</span>
+            {% endif %}
+        </div>
+        
+        <!-- Información del Excel -->
+        <div class="alert alert-info mb-4">
+            <h5 class="alert-heading">ℹ️ Como en tu Excel:</h5>
+            <p class="mb-0">Esta sección corresponde a la <strong>"PRIMERA FASE: Datos iniciales"</strong> de tu archivo Excel. 
+            Aquí configuras los datos básicos del proyecto que se usarán en todas las fases siguientes.</p>
+        </div>
+
+        <!-- Formulario -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Datos del Proyecto</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('datos_iniciales') }}">
+                    
+                    <!-- Fila 1: Nombre del proyecto -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="nombre" class="form-label">
+                                    <strong>nombre del proyecto:</strong>
+                                </label>
+                                <input type="text" class="form-control form-control-lg" 
+                                       id="nombre" name="nombre" 
+                                       value="{{ proyecto.nombre if proyecto else '' }}"
+                                       placeholder="Ej: empresa de prueba" required>
+                                <div class="form-text">
+                                    <small>se ingresara nombre del proyecto</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <!-- Espacio en blanco para mantener estructura como Excel -->
+                        </div>
+                    </div>
+
+                    <!-- Fila 2: Tipo de actividad -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="tipo_actividad" class="form-label">
+                                    <strong>tipo de actividad:</strong>
+                                </label>
+                                <input type="text" class="form-control form-control-lg" 
+                                       id="tipo_actividad" name="tipo_actividad" 
+                                       value="{{ proyecto.tipo_actividad if proyecto else '' }}"
+                                       placeholder="Ej: venta de articulos" required>
+                                <div class="form-text">
+                                    <small>una descripcion pequeña sobre el proyecto</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fila 3: Inversión inicial -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    <strong>inversion inicial:</strong>
+                                </label>
+                                <div class="d-flex align-items-center">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" 
+                                               name="tiene_inversion" id="inversion_si" 
+                                               value="si" 
+                                               {% if proyecto and proyecto.tiene_inversion == 1 %}checked{% endif %}>
+                                        <label class="form-check-label" for="inversion_si">si</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" 
+                                               name="tiene_inversion" id="inversion_no" 
+                                               value="no" 
+                                               {% if not proyecto or proyecto.tiene_inversion == 0 %}checked{% endif %}>
+                                        <label class="form-check-label" for="inversion_no">no</label>
+                                    </div>
+                                </div>
+                                <div class="form-text">
+                                    <small>aquí habrá un checkbox donde se elegirá si tiene o no inversión inicial</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3" id="campo_valor_inversion" 
+                                 style="display: {% if proyecto and proyecto.tiene_inversion == 1 %}block{% else %}none{% endif %};">
+                                <label for="valor_inversion" class="form-label">
+                                    <strong>valor de la inversión inicial:</strong>
+                                </label>
+                                <input type="number" class="form-control" 
+                                       id="valor_inversion" name="valor_inversion" 
+                                       value="{{ proyecto.valor_inversion if proyecto else 0 }}"
+                                       step="0.01" min="0">
+                                <div class="form-text">
+                                    <small>si tiene inversión inicial aparecerá esta opción</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fila 4: Tasa de descuento -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="tasa_descuento" class="form-label">
+                                    <strong>tasas de descuento:</strong>
+                                </label>
+                                <input type="number" class="form-control form-control-lg" 
+                                       id="tasa_descuento" name="tasa_descuento" 
+                                       value="{{ proyecto.tasa_descuento if proyecto else 0.001 }}"
+                                       step="0.001" min="0" max="1" required>
+                                <div class="form-text">
+                                    <small>aquí ingresaremos la tasa en porcentaje (ej: 0.001 = 0.1%)</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fila 5: Nombre del producto -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="nombre_producto" class="form-label">
+                                    <strong>nombre del producto:</strong>
+                                </label>
+                                <input type="text" class="form-control form-control-lg" 
+                                       id="nombre_producto" name="nombre_producto" 
+                                       value="{{ proyecto.nombre_producto if proyecto else '' }}"
+                                       placeholder="Ej: PC gamer" required>
+                                <div class="form-text">
+                                    <small>aquí el nombre del producto que evaluaremos</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fila 6: Precio del producto -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="precio_producto" class="form-label">
+                                    <strong>Precio del producto:</strong>
+                                </label>
+                                <input type="number" class="form-control form-control-lg" 
+                                       id="precio_producto" name="precio_producto" 
+                                       value="{{ proyecto.precio_producto if proyecto else 2000 }}"
+                                       step="0.01" min="0" required>
+                                <div class="form-text">
+                                    <small>aquí su precio del producto que evaluaremos</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botones -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+                            ← Volver al Inicio
+                        </a>
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            {% if proyecto %}Actualizar Proyecto{% else %}Crear Proyecto{% endif %}
+                        </button>
+                        <a href="{{ url_for('viabilidad_tecnica') }}" class="btn btn-success">
+                            Siguiente: Viabilidad Técnica →
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Resumen si hay proyecto -->
+        {% if proyecto %}
+        <div class="card mt-4 shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">📊 Resumen del Proyecto</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>PROYECTO:</th>
+                                <td>{{ proyecto.nombre }}</td>
+                            </tr>
+                            <tr>
+                                <th>Actividad:</th>
+                                <td>{{ proyecto.tipo_actividad }}</td>
+                            </tr>
+                            <tr>
+                                <th>Inversión:</th>
+                                <td>{{ 'Sí' if proyecto.tiene_inversion == 1 else 'No' }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Tasa:</th>
+                                <td>{{ (proyecto.tasa_descuento * 100)|round(3) }}%</td>
+                            </tr>
+                            <tr>
+                                <th>Producto:</th>
+                                <td>{{ proyecto.nombre_producto }}</td>
+                            </tr>
+                            <tr>
+                                <th>Precio:</th>
+                                <td>$ {{ proyecto.precio_producto|round(2) }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Mostrar/ocultar campo de valor de inversión
+    document.querySelectorAll('input[name="tiene_inversion"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            const campoValor = document.getElementById('campo_valor_inversion');
+            campoValor.style.display = this.value === 'si' ? 'block' : 'none';
+            
+            // Si selecciona "no", establecer valor a 0
+            if (this.value === 'no') {
+                document.getElementById('valor_inversion').value = 0;
+            }
+        });
+    });
+
+    // Formatear tasa como porcentaje al perder foco
+    document.getElementById('tasa_descuento').addEventListener('blur', function() {
+        let valor = parseFloat(this.value);
+        if (!isNaN(valor)) {
+            this.value = valor.toFixed(4); // 4 decimales como en Excel
+        }
+    });
+
+    // Formatear precio al perder foco
+    document.getElementById('precio_producto').addEventListener('blur', function() {
+        let valor = parseFloat(this.value);
+        if (!isNaN(valor)) {
+            this.value = valor.toFixed(2); // 2 decimales
+        }
+    });
+</script>
+{% endblock %}

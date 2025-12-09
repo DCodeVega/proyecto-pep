@@ -1,0 +1,587 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <!-- Encabezado -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">💰 Flujos de Caja</h2>
+            {% if proyecto %}
+            <div>
+                <span class="badge bg-primary">Proyecto: {{ proyecto.nombre }}</span>
+                <span class="badge bg-success">Producto: {{ proyecto.nombre_producto }}</span>
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Información del Excel -->
+        <div class="alert alert-info mb-4">
+            <h5 class="alert-heading">ℹ️ Como en tu Excel:</h5>
+            <p class="mb-0">Esta sección corresponde a la parte de <strong>"Flujos de caja"</strong> de tu archivo Excel. 
+            Aquí defines las ventas por periodo y se calculan automáticamente los ingresos, costos, gastos, egresos y utilidad bruta.</p>
+        </div>
+
+        <!-- Advertencia si no hay proyecto -->
+        {% if not proyecto %}
+        <div class="alert alert-warning">
+            <h5>⚠️ Primero debes crear un proyecto</h5>
+            <p>Para configurar flujos de caja, primero necesitas crear un proyecto en la sección "Datos Iniciales".</p>
+            <a href="{{ url_for('datos_iniciales') }}" class="btn btn-warning">Ir a Datos Iniciales →</a>
+        </div>
+        {% else %}
+        
+        <!-- Selector de tipo de flujo -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-purple text-white">
+                <h5 class="mb-0">⏰ Elegir Periodo de Análisis</h5>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-light mb-4">
+                    <p class="mb-0">
+                        <strong>⚠️ Nota:</strong> Estos flujos de abajo cambiarán según el tipo de flujo escogido anteriormente.
+                    </p>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="form-label"><strong>elegir opcion:</strong></label>
+                        <div class="d-flex flex-wrap gap-3 mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="tipo_flujo" 
+                                       id="flujo_dias" value="dias" 
+                                       onclick="mostrarFlujo('dias')" 
+                                       {% if request.args.get('tipo') != 'semanas' and request.args.get('tipo') != 'meses' and request.args.get('tipo') != 'anos' %}checked{% endif %}>
+                                <label class="form-check-label" for="flujo_dias">
+                                    flujo por dias
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="tipo_flujo" 
+                                       id="flujo_semanas" value="semanas" 
+                                       onclick="mostrarFlujo('semanas')"
+                                       {% if request.args.get('tipo') == 'semanas' %}checked{% endif %}>
+                                <label class="form-check-label" for="flujo_semanas">
+                                    flujo por semanas
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="tipo_flujo" 
+                                       id="flujo_meses" value="meses" 
+                                       onclick="mostrarFlujo('meses')"
+                                       {% if request.args.get('tipo') == 'meses' %}checked{% endif %}>
+                                <label class="form-check-label" for="flujo_meses">
+                                    flujo por meses
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="tipo_flujo" 
+                                       id="flujo_anos" value="anos" 
+                                       onclick="mostrarFlujo('anos')"
+                                       {% if request.args.get('tipo') == 'anos' %}checked{% endif %}>
+                                <label class="form-check-label" for="flujo_anos">
+                                    flujo por años
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resumen de datos previos -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0">📊 DATOS PREVIOS</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <!-- Datos del proyecto -->
+                    <div class="col-md-4">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>PROYECTO:</th>
+                                <td>{{ proyecto.nombre }}</td>
+                            </tr>
+                            <tr>
+                                <th>Actividad:</th>
+                                <td>{{ proyecto.tipo_actividad }}</td>
+                            </tr>
+                            <tr>
+                                <th>Inversión:</th>
+                                <td>{{ 'Sí' if proyecto.tiene_inversion == 1 else 'No' }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-4">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Tasa:</th>
+                                <td>{{ (proyecto.tasa_descuento * 100)|round(3) }}%</td>
+                            </tr>
+                            <tr>
+                                <th>Producto:</th>
+                                <td>{{ proyecto.nombre_producto }}</td>
+                            </tr>
+                            <tr>
+                                <th>Precio:</th>
+                                <td>$ {{ proyecto.precio_producto|round(2) }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <!-- Totales acumulados -->
+                    <div class="col-md-4">
+                        <div class="card bg-light h-100">
+                            <div class="card-body">
+                                <h6 class="card-title text-center mb-3">TOTALES ACUMULADOS</h6>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Costos:</span>
+                                    <strong class="text-success">$ {{ totales.costos|round(2) }}</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Gastos:</span>
+                                    <strong class="text-warning">$ {{ totales.gastos|round(2) }}</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Salarios:</span>
+                                    <strong class="text-danger">$ {{ totales.salarios|round(2) }}</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Materiales:</span>
+                                    <strong class="text-info">$ {{ totales.materiales|round(2) }}</strong>
+                                </div>
+                                <hr>
+                                <div class="d-flex justify-content-between">
+                                    <strong>Total General:</strong>
+                                    <strong>$ {{ (totales.costos + totales.gastos + totales.salarios + totales.materiales)|round(2) }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== FLUJO POR DÍAS ========== -->
+        <div id="flujo_dias_container" class="flujo-container">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">📅 Flujo por Días</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('guardar_ventas_dias') }}">
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>flujo por dias</th>
+                                        <th>lunes</th>
+                                        <th>martes</th>
+                                        <th>miércoles</th>
+                                        <th>jueves</th>
+                                        <th>viernes</th>
+                                        <th>sábado</th>
+                                        <th>domingo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="table-secondary"><strong>Nro de productos vendidos</strong></td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="lunes" value="{{ ventas_dias.lunes if ventas_dias else 4 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="martes" value="{{ ventas_dias.martes if ventas_dias else 3 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="miercoles" value="{{ ventas_dias.miercoles if ventas_dias else 2 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="jueves" value="{{ ventas_dias.jueves if ventas_dias else 4 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="viernes" value="{{ ventas_dias.viernes if ventas_dias else 6 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="sabado" value="{{ ventas_dias.sabado if ventas_dias else 10 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="domingo" value="{{ ventas_dias.domingo if ventas_dias else 4 }}" min="0">
+                                        </td>
+                                    </tr>
+                                    
+                                    <!-- Cálculos automáticos -->
+                                    {% if ventas_dias %}
+                                    <tr class="table-success">
+                                        <td><strong>Ingresos</strong></td>
+                                        <td>$ {{ (ventas_dias.lunes * proyecto.precio_producto)|round(2) }}</td>
+                                        <td>$ {{ (ventas_dias.martes * proyecto.precio_producto)|round(2) }}</td>
+                                        <td>$ {{ (ventas_dias.miercoles * proyecto.precio_producto)|round(2) }}</td>
+                                        <td>$ {{ (ventas_dias.jueves * proyecto.precio_producto)|round(2) }}</td>
+                                        <td>$ {{ (ventas_dias.viernes * proyecto.precio_producto)|round(2) }}</td>
+                                        <td>$ {{ (ventas_dias.sabado * proyecto.precio_producto)|round(2) }}</td>
+                                        <td>$ {{ (ventas_dias.domingo * proyecto.precio_producto)|round(2) }}</td>
+                                    </tr>
+                                    <tr class="table-danger">
+                                        <td><strong>Costos (diarios)</strong></td>
+                                        {% for i in range(7) %}
+                                        <td>$ {{ (totales.costos / 30)|round(2) }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    <tr class="table-warning">
+                                        <td><strong>Gastos (diarios)</strong></td>
+                                        {% for i in range(7) %}
+                                        <td>$ {{ (totales.gastos / 30)|round(2) }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    <tr class="table-info">
+                                        <td><strong>utilidad bruta</strong></td>
+                                        {% set dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'] %}
+                                        {% for dia in dias %}
+                                        {% set ingresos = ventas_dias[dia] * proyecto.precio_producto %}
+                                        {% set costos_diarios = totales.costos / 30 %}
+                                        {% set gastos_diarios = totales.gastos / 30 %}
+                                        <td>$ {{ (ingresos - costos_diarios - gastos_diarios)|round(2) }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="mt-3 text-center">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                💾 Guardar Ventas por Día
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== FLUJO POR SEMANAS ========== -->
+        <div id="flujo_semanas_container" class="flujo-container" style="display: none;">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">📅 Flujo por Semanas</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('guardar_ventas_semanas') }}">
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>flujo por semanas</th>
+                                        <th>semana 1</th>
+                                        <th>semana 2</th>
+                                        <th>semana 3</th>
+                                        <th>semana 4</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="table-secondary"><strong>Nro de productos vendidos</strong></td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="semana1" value="{{ ventas_semanas.semana1 if ventas_semanas else 20 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="semana2" value="{{ ventas_semanas.semana2 if ventas_semanas else 14 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="semana3" value="{{ ventas_semanas.semana3 if ventas_semanas else 15 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="semana4" value="{{ ventas_semanas.semana4 if ventas_semanas else 12 }}" min="0">
+                                        </td>
+                                    </tr>
+                                    
+                                    <!-- Cálculos automáticos -->
+                                    {% if ventas_semanas %}
+                                    <tr class="table-success">
+                                        <td><strong>Ingresos</strong></td>
+                                        <td>$ {{ (ventas_semanas.semana1 * proyecto.precio_producto)|round(2) }}</td>
+                                        <td>$ {{ (ventas_semanas.semana2 * proyecto.precio_producto)|round(2) }}</td>
+                                        <td>$ {{ (ventas_semanas.semana3 * proyecto.precio_producto)|round(2) }}</td>
+                                        <td>$ {{ (ventas_semanas.semana4 * proyecto.precio_producto)|round(2) }}</td>
+                                    </tr>
+                                    <tr class="table-info">
+                                        <td><strong>utilidad bruta</strong></td>
+                                        {% set semanas = ['semana1', 'semana2', 'semana3', 'semana4'] %}
+                                        {% for semana in semanas %}
+                                        {% set ingresos = ventas_semanas[semana] * proyecto.precio_producto %}
+                                        {% set costos_semanales = totales.costos / 4 %}
+                                        {% set gastos_semanales = totales.gastos / 4 %}
+                                        <td>$ {{ (ingresos - costos_semanales - gastos_semanales)|round(2) }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="mt-3 text-center">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                💾 Guardar Ventas por Semana
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== FLUJO POR MESES ========== -->
+        <div id="flujo_meses_container" class="flujo-container" style="display: none;">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0">📅 Flujo por Meses (Enero - Julio)</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('guardar_ventas_meses') }}">
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>flujo por meses</th>
+                                        <th>enero</th>
+                                        <th>febrero</th>
+                                        <th>marzo</th>
+                                        <th>abril</th>
+                                        <th>mayo</th>
+                                        <th>junio</th>
+                                        <th>julio</th>
+                                        <th class="table-info">
+                                            <small>Ajustar: ene-jul</small>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="table-secondary"><strong>Nro de productos vendidos</strong></td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="enero" value="{{ ventas_meses.enero if ventas_meses else 0 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="febrero" value="{{ ventas_meses.febrero if ventas_meses else 0 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="marzo" value="{{ ventas_meses.marzo if ventas_meses else 0 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="abril" value="{{ ventas_meses.abril if ventas_meses else 0 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="mayo" value="{{ ventas_meses.mayo if ventas_meses else 0 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="junio" value="{{ ventas_meses.junio if ventas_meses else 0 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="julio" value="{{ ventas_meses.julio if ventas_meses else 0 }}" min="0">
+                                        </td>
+                                        <td class="table-info">
+                                            <small>Rango Enero-Julio</small>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="mt-3 text-center">
+                            <button type="submit" class="btn btn-warning btn-lg">
+                                💾 Guardar Ventas por Mes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== FLUJO POR AÑOS ========== -->
+        <div id="flujo_anos_container" class="flujo-container" style="display: none;">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">📅 Flujo por Años</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('guardar_ventas_anos') }}">
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>flujo por años</th>
+                                        <th>año 1</th>
+                                        <th>año 2</th>
+                                        <th>año 3</th>
+                                        <th>año 4</th>
+                                        <th>año 5</th>
+                                        <th>año 6</th>
+                                        <th>año 7</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="table-secondary"><strong>Nro de productos vendidos</strong></td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="año1" value="{{ ventas_anos.año1 if ventas_anos else 0 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="año2" value="{{ ventas_anos.año2 if ventas_anos else 0 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="año3" value="{{ ventas_anos.año3 if ventas_anos else 0 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="año4" value="{{ ventas_anos.año4 if ventas_anos else 0 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="año5" value="{{ ventas_anos.año5 if ventas_anos else 0 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="año6" value="{{ ventas_anos.año6 if ventas_anos else 0 }}" min="0">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control text-center" 
+                                                   name="año7" value="{{ ventas_anos.año7 if ventas_anos else 0 }}" min="0">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="mt-3 text-center">
+                            <button type="submit" class="btn btn-info btn-lg">
+                                💾 Guardar Ventas por Año
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botones de navegación -->
+        <div class="d-flex justify-content-between mt-4">
+            <div>
+                <a href="{{ url_for('equipo_maquinaria') }}" class="btn btn-outline-secondary">
+                    ← Volver a materiales y flujos
+                </a>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="{{ url_for('calculos_financieros') }}" class="btn btn-primary">
+                    Ver más cálculos
+                </a>
+                <a href="{{ url_for('calculos_financieros') }}" class="btn btn-success">
+                    Siguiente: Resultados Financieros →
+                </a>
+            </div>
+        </div>
+        
+        {% endif %} <!-- Fin del if proyecto -->
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<style>
+    .bg-purple {
+        background-color: #6f42c1 !important;
+    }
+    
+    .flujo-container {
+        transition: all 0.3s ease;
+    }
+    
+    .form-control.text-center {
+        text-align: center;
+    }
+    
+    /* Colores de tablas como en Excel */
+    .table-success {
+        background-color: #d1e7dd !important;
+    }
+    
+    .table-danger {
+        background-color: #f8d7da !important;
+    }
+    
+    .table-warning {
+        background-color: #fff3cd !important;
+    }
+    
+    .table-info {
+        background-color: #cff4fc !important;
+    }
+</style>
+
+<script>
+    // Función para mostrar/ocultar flujos según selección
+    function mostrarFlujo(tipo) {
+        // Ocultar todos los contenedores
+        document.querySelectorAll('.flujo-container').forEach(container => {
+            container.style.display = 'none';
+        });
+        
+        // Mostrar el contenedor seleccionado
+        document.getElementById('flujo_' + tipo + '_container').style.display = 'block';
+        
+        // Guardar selección en localStorage
+        localStorage.setItem('tipo_flujo_seleccionado', tipo);
+        
+        // Actualizar URL sin recargar la página
+        const url = new URL(window.location);
+        url.searchParams.set('tipo', tipo);
+        window.history.replaceState({}, '', url);
+    }
+    
+    // Cargar selección guardada al cargar la página
+    document.addEventListener('DOMContentLoaded', function() {
+        // Verificar si hay tipo en URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const tipoURL = urlParams.get('tipo');
+        
+        // Verificar localStorage
+        const tipoGuardado = localStorage.getItem('tipo_flujo_seleccionado');
+        
+        // Determinar qué tipo mostrar
+        let tipoAMostrar = 'dias'; // Por defecto
+        
+        if (tipoURL) {
+            tipoAMostrar = tipoURL;
+        } else if (tipoGuardado) {
+            tipoAMostrar = tipoGuardado;
+        }
+        
+        // Marcar el radio button correspondiente
+        const radioBtn = document.getElementById('flujo_' + tipoAMostrar);
+        if (radioBtn) {
+            radioBtn.checked = true;
+        }
+        
+        // Mostrar el flujo correspondiente
+        mostrarFlujo(tipoAMostrar);
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,475 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <!-- Encabezado -->
+        <div class="text-center mb-5">
+            <h1 class="display-4">📈 Resultados Financieros</h1>
+            <p class="lead">Análisis completo de rentabilidad del proyecto</p>
+            {% if resultados.proyecto %}
+            <div class="mt-3">
+                <span class="badge bg-primary fs-6">Proyecto: {{ resultados.proyecto.nombre }}</span>
+                <span class="badge bg-info fs-6">Producto: {{ resultados.proyecto.nombre_producto }}</span>
+                <span class="badge bg-secondary fs-6">Tasa: {{ (resultados.proyecto.tasa_descuento * 100)|round(3) }}%</span>
+            </div>
+            {% endif %}
+        </div>
+
+        {% if not resultados.proyecto %}
+        <div class="alert alert-warning">
+            <h5>⚠️ Primero debes crear un proyecto</h5>
+            <p>Para ver resultados financieros, primero necesitas crear un proyecto y completar todas las fases.</p>
+            <a href="{{ url_for('datos_iniciales') }}" class="btn btn-warning">Ir a Datos Iniciales →</a>
+        </div>
+        {% else %}
+        
+        <!-- Resumen de Inversión Total -->
+        <div class="row mb-5">
+            <div class="col-md-8 mx-auto">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-dark text-white text-center">
+                        <h4 class="mb-0">💼 INVERSIÓN TOTAL DEL PROYECTO</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-md-3 mb-3">
+                                <div class="p-3 bg-success bg-opacity-10 rounded">
+                                    <h5 class="text-success">Costos</h5>
+                                    <h3>$ {{ resultados.totales.costos|round(2) }}</h3>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="p-3 bg-warning bg-opacity-10 rounded">
+                                    <h5 class="text-warning">Gastos</h5>
+                                    <h3>$ {{ resultados.totales.gastos|round(2) }}</h3>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="p-3 bg-danger bg-opacity-10 rounded">
+                                    <h5 class="text-danger">Salarios (7 años)</h5>
+                                    <h3>$ {{ (resultados.totales.salarios * 12 * 7)|round(2) }}</h3>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="p-3 bg-info bg-opacity-10 rounded">
+                                    <h5 class="text-info">Materiales</h5>
+                                    <h3>$ {{ resultados.totales.materiales|round(2) }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <h2 class="text-dark">
+                                Inversión Total: 
+                                <span class="text-primary">$ {{ resultados.calculos.inversion_total|round(2) }}</span>
+                            </h2>
+                            {% if resultados.proyecto.tiene_inversion == 1 %}
+                            <p class="text-muted mb-0">
+                                Incluye inversión inicial de $ {{ resultados.proyecto.valor_inversion|round(2) }}
+                            </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Principales Indicadores -->
+        <div class="row mb-5">
+            <div class="col-md-10 mx-auto">
+                <h3 class="text-center mb-4">📊 INDICADORES FINANCIEROS PRINCIPALES</h3>
+                
+                <div class="row g-4">
+                    <!-- VAN -->
+                    <div class="col-md-3">
+                        <div class="card h-100 text-center border-0 shadow-sm 
+                                    {% if resultados.calculos.van > 0 %}border-success border-3
+                                    {% else %}border-danger border-3{% endif %}">
+                            <div class="card-body">
+                                <h5 class="card-title">VAN</h5>
+                                <p class="card-text text-muted">Valor Actual Neto</p>
+                                <h2 class="{% if resultados.calculos.van > 0 %}text-success{% else %}text-danger{% endif %}">
+                                    $ {{ resultados.calculos.van|round(2) }}
+                                </h2>
+                                <div class="mt-3">
+                                    {% if resultados.calculos.van > 0 %}
+                                    <span class="badge bg-success fs-6">PROYECTO VIABLE</span>
+                                    <p class="mt-2 mb-0">
+                                        <small>El proyecto crea valor</small>
+                                    </p>
+                                    {% else %}
+                                    <span class="badge bg-danger fs-6">NO VIABLE</span>
+                                    <p class="mt-2 mb-0">
+                                        <small>El proyecto destruye valor</small>
+                                    </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TIR -->
+                    <div class="col-md-3">
+                        <div class="card h-100 text-center border-0 shadow-sm 
+                                    {% if resultados.calculos.tir and resultados.calculos.tir > resultados.proyecto.tasa_descuento * 100 %}border-success border-3
+                                    {% else %}border-danger border-3{% endif %}">
+                            <div class="card-body">
+                                <h5 class="card-title">TIR</h5>
+                                <p class="card-text text-muted">Tasa Interna de Retorno</p>
+                                <h2 class="{% if resultados.calculos.tir and resultados.calculos.tir > resultados.proyecto.tasa_descuento * 100 %}text-success{% else %}text-danger{% endif %}">
+                                    {% if resultados.calculos.tir %}
+                                    {{ resultados.calculos.tir|round(2) }}%
+                                    {% else %}
+                                    N/A
+                                    {% endif %}
+                                </h2>
+                                <div class="mt-3">
+                                    {% if resultados.calculos.tir and resultados.calculos.tir > resultados.proyecto.tasa_descuento * 100 %}
+                                    <span class="badge bg-success fs-6">ACEPTABLE</span>
+                                    <p class="mt-2 mb-0">
+                                        <small>TIR > Tasa de descuento</small>
+                                    </p>
+                                    {% else %}
+                                    <span class="badge bg-danger fs-6">NO ACEPTABLE</span>
+                                    <p class="mt-2 mb-0">
+                                        <small>TIR ≤ Tasa de descuento</small>
+                                    </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- B/C -->
+                    <div class="col-md-3">
+                        <div class="card h-100 text-center border-0 shadow-sm 
+                                    {% if resultados.calculos.bc > 1 %}border-success border-3
+                                    {% else %}border-danger border-3{% endif %}">
+                            <div class="card-body">
+                                <h5 class="card-title">B/C</h5>
+                                <p class="card-text text-muted">Relación Beneficio/Costo</p>
+                                <h2 class="{% if resultados.calculos.bc > 1 %}text-success{% else %}text-danger{% endif %}">
+                                    {{ resultados.calculos.bc|round(3) }}
+                                </h2>
+                                <div class="mt-3">
+                                    {% if resultados.calculos.bc > 1 %}
+                                    <span class="badge bg-success fs-6">CONVIENE</span>
+                                    <p class="mt-2 mb-0">
+                                        <small>Beneficios > Costos</small>
+                                    </p>
+                                    {% else %}
+                                    <span class="badge bg-danger fs-6">NO CONVIENE</span>
+                                    <p class="mt-2 mb-0">
+                                        <small>Costos ≥ Beneficios</small>
+                                    </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PRI -->
+                    <div class="col-md-3">
+                        <div class="card h-100 text-center border-0 shadow-sm 
+                                    {% if resultados.calculos.pri and resultados.calculos.pri <= 3 %}border-success border-3
+                                    {% elif resultados.calculos.pri and resultados.calculos.pri <= 5 %}border-warning border-3
+                                    {% else %}border-danger border-3{% endif %}">
+                            <div class="card-body">
+                                <h5 class="card-title">PRI</h5>
+                                <p class="card-text text-muted">Periodo de Recuperación</p>
+                                <h2 class="
+                                    {% if resultados.calculos.pri and resultados.calculos.pri <= 3 %}text-success
+                                    {% elif resultados.calculos.pri and resultados.calculos.pri <= 5 %}text-warning
+                                    {% else %}text-danger{% endif %}">
+                                    {% if resultados.calculos.pri is not none %}
+                                    {{ resultados.calculos.pri|round(2) }} años
+                                    {% else %}
+                                    N/A
+                                    {% endif %}
+                                </h2>
+                                <div class="mt-3">
+                                    {% if resultados.calculos.pri is not none %}
+                                        {% if resultados.calculos.pri <= 3 %}
+                                        <span class="badge bg-success fs-6">EXCELENTE</span>
+                                        <p class="mt-2 mb-0">
+                                            <small>Recuperación rápida</small>
+                                        </p>
+                                        {% elif resultados.calculos.pri <= 5 %}
+                                        <span class="badge bg-warning fs-6">ACEPTABLE</span>
+                                        <p class="mt-2 mb-0">
+                                            <small>Recuperación moderada</small>
+                                        </p>
+                                        {% else %}
+                                        <span class="badge bg-danger fs-6">LENTO</span>
+                                        <p class="mt-2 mb-0">
+                                            <small>Recuperación lenta</small>
+                                        </p>
+                                        {% endif %}
+                                    {% else %}
+                                    <span class="badge bg-secondary fs-6">NO CALCULABLE</span>
+                                    <p class="mt-2 mb-0">
+                                        <small>No se recupera inversión</small>
+                                    </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flujos de Caja Proyectados -->
+        <div class="row mb-5">
+            <div class="col-md-10 mx-auto">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">📅 Flujos de Caja Proyectados (7 años)</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered text-center">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Año</th>
+                                        <th>Inversión/Costo</th>
+                                        <th>Ingresos</th>
+                                        <th>Flujo Neto</th>
+                                        <th>Flujo Acumulado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% set acumulado = 0 %}
+                                    {% for i in range(8) %}
+                                    {% set flujo = resultados.calculos.flujos[i] if i < resultados.calculos.flujos|length else 0 %}
+                                    {% set acumulado = acumulado + flujo %}
+                                    <tr class="{% if i == 0 %}table-danger{% elif flujo > 0 %}table-success{% else %}table-warning{% endif %}">
+                                        <td><strong>Año {{ i }}</strong></td>
+                                        <td>
+                                            {% if i == 0 %}
+                                            <span class="text-danger">- $ {{ (-flujo)|round(2) if flujo < 0 else 0 }}</span>
+                                            {% else %}
+                                            $ {{ ((resultados.totales.costos / 7) + (resultados.totales.gastos / 7) + (resultados.totales.salarios * 12))|round(2) }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if i > 0 %}
+                                            {% set ventas_anuales = 0 %}
+                                            {% if ventas_anos %}
+                                                {% set año_key = 'año' ~ i %}
+                                                {% set ventas_anuales = ventas_anos[año_key] if año_key in ventas_anos.keys() else 0 %}
+                                            {% endif %}
+                                            $ {{ (ventas_anuales * resultados.proyecto.precio_producto)|round(2) }}
+                                            {% else %}
+                                            $ 0
+                                            {% endif %}
+                                        </td>
+                                        <td class="{% if flujo > 0 %}text-success{% else %}text-danger{% endif %}">
+                                            $ {{ flujo|round(2) }}
+                                        </td>
+                                        <td class="{% if acumulado > 0 %}text-success{% else %}text-danger{% endif %}">
+                                            $ {{ acumulado|round(2) }}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Gráfico simple -->
+                        <div class="mt-4">
+                            <h5>📈 Visualización de Flujos</h5>
+                            <div class="progress" style="height: 30px;">
+                                {% for i in range(1, 8) %}
+                                {% set flujo = resultados.calculos.flujos[i] if i < resultados.calculos.flujos|length else 0 %}
+                                <div class="progress-bar {% if flujo > 0 %}bg-success{% else %}bg-danger{% endif %}" 
+                                     style="width: 14.28%;" 
+                                     title="Año {{ i }}: ${{ flujo|round(2) }}">
+                                    A{{ i }}
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="d-flex justify-content-between mt-2">
+                                <small class="text-muted">Año 1</small>
+                                <small class="text-muted">Año 7</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Análisis de Sensibilidad -->
+        <div class="row mb-5">
+            <div class="col-md-10 mx-auto">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-warning text-dark">
+                        <h4 class="mb-0">🔍 Análisis de Sensibilidad</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Variación del VAN con la Tasa de Descuento</h5>
+                                <table class="table table-sm table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Tasa</th>
+                                            <th>VAN</th>
+                                            <th>Decisión</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for tasa in [0.05, 0.10, 0.15, 0.20] %}
+                                        {% set van_tasa = calcular_van(tasa, resultados.calculos.flujos) %}
+                                        <tr>
+                                            <td>{{ (tasa * 100)|round(0) }}%</td>
+                                            <td>$ {{ van_tasa|round(2) }}</td>
+                                            <td>
+                                                {% if van_tasa > 0 %}
+                                                <span class="badge bg-success">Aceptar</span>
+                                                {% else %}
+                                                <span class="badge bg-danger">Rechazar</span>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Recomendación Final</h5>
+                                <div class="alert 
+                                    {% if resultados.calculos.van > 0 and resultados.calculos.tir and resultados.calculos.tir > resultados.proyecto.tasa_descuento * 100 and resultados.calculos.bc > 1 %}
+                                    alert-success
+                                    {% else %}
+                                    alert-danger
+                                    {% endif %}">
+                                    <h5 class="alert-heading">
+                                        {% if resultados.calculos.van > 0 and resultados.calculos.tir and resultados.calculos.tir > resultados.proyecto.tasa_descuento * 100 and resultados.calculos.bc > 1 %}
+                                        ✅ PROYECTO RECOMENDADO
+                                        {% else %}
+                                        ❌ PROYECTO NO RECOMENDADO
+                                        {% endif %}
+                                    </h5>
+                                    <p>
+                                        {% if resultados.calculos.van > 0 and resultados.calculos.tir and resultados.calculos.tir > resultados.proyecto.tasa_descuento * 100 and resultados.calculos.bc > 1 %}
+                                        Basado en el análisis financiero, este proyecto es viable y recomendable. 
+                                        Crea valor para los inversionistas y tiene una relación beneficio/costo favorable.
+                                        {% else %}
+                                        Basado en el análisis financiero, este proyecto no es recomendable en las condiciones actuales. 
+                                        Se sugiere revisar costos, precios o estructura del proyecto.
+                                        {% endif %}
+                                    </p>
+                                </div>
+                                
+                                <!-- Rentabilidad -->
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6>Rentabilidad sobre Inversión</h6>
+                                        <div class="progress mt-2" style="height: 25px;">
+                                            <div class="progress-bar bg-success" 
+                                                 style="width: {{ [resultados.calculos.rentabilidad, 0]|max }}%; 
+                                                        max-width: 100%;">
+                                                {{ resultados.calculos.rentabilidad|round(2) }}%
+                                            </div>
+                                        </div>
+                                        <small class="text-muted">
+                                            Retorno sobre la inversión inicial
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="d-flex justify-content-between mt-4">
+            <div>
+                <a href="{{ url_for('flujos_caja') }}" class="btn btn-outline-secondary">
+                    ← Volver a Flujos de Caja
+                </a>
+                <a href="{{ url_for('index') }}" class="btn btn-outline-primary ms-2">
+                    🏠 Volver al Inicio
+                </a>
+            </div>
+            <div>
+                <button onclick="window.print()" class="btn btn-info">
+                    🖨️ Imprimir Reporte
+                </button>
+                <a href="{{ url_for('limpiar_datos') }}" 
+                   class="btn btn-danger ms-2"
+                   onclick="return confirm('¿Estás seguro de limpiar todos los datos? Esto borrará costos, gastos, personal y materiales.')">
+                    🗑️ Limpiar Datos (Pruebas)
+                </a>
+            </div>
+        </div>
+
+        <!-- Nota final -->
+        <div class="alert alert-light mt-4">
+            <h6>📝 Notas sobre los cálculos:</h6>
+            <ul class="mb-0">
+                <li><strong>VAN:</strong> Valor Actual Neto. Si > 0, el proyecto crea valor.</li>
+                <li><strong>TIR:</strong> Tasa Interna de Retorno. Debe ser mayor que la tasa de descuento.</li>
+                <li><strong>B/C:</strong> Relación Beneficio/Costo. Si > 1, los beneficios superan los costos.</li>
+                <li><strong>PRI:</strong> Periodo de Recuperación de la Inversión. Menor es mejor.</li>
+                <li>Los cálculos asumen una proyección de 7 años y distribución uniforme de costos.</li>
+            </ul>
+        </div>
+        
+        {% endif %} <!-- Fin del if proyecto -->
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<style>
+    .card {
+        transition: transform 0.3s;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .progress-bar {
+        font-size: 12px;
+        font-weight: bold;
+    }
+    
+    @media print {
+        .navbar, .btn, footer {
+            display: none !important;
+        }
+        
+        .card {
+            border: 1px solid #000 !important;
+            box-shadow: none !important;
+        }
+    }
+</style>
+
+<script>
+    // Mejorar visualización para impresión
+    document.addEventListener('DOMContentLoaded', function() {
+        // Agregar fecha al reporte
+        const fecha = new Date().toLocaleDateString('es-ES', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        
+        const fechaElement = document.createElement('div');
+        fechaElement.className = 'text-center text-muted mb-3';
+        fechaElement.innerHTML = `<small>Reporte generado el ${fecha}</small>`;
+        
+        const header = document.querySelector('.text-center.mb-5');
+        if (header) {
+            header.appendChild(fechaElement);
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,28 @@
+<div class="modal fade" id="modalEditarMaterial" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title">Editar Material</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST" action="{{ url_for('editar_material', id=material.id) }}">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nombre_material" class="form-label">Nombre del material:</label>
+                        <input type="text" class="form-control" id="nombre_material" 
+                               name="nombre_material" value="{{ material.nombre }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="valor_material" class="form-label">Valor:</label>
+                        <input type="number" class="form-control" id="valor_material" 
+                               name="valor_material" value="{{ material.valor }}" step="0.01" min="0" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-info">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
