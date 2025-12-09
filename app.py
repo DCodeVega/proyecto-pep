@@ -9,8 +9,14 @@ app.config.from_object(Config)
 
 # Función para conectar a la base de datos
 def get_db_connection():
-    conn = sqlite3.connect(':memory:') # para arrancar en Railway
-    #conn = sqlite3.connect(app.config['DATABASE_PATH']) # para arrancar en local
+    import os        #borrar si da errores, es por railway
+    import tempfile    #borrar si da errores, es por railway
+
+    db_path = os.path.join(tempfile.gettempdir(), 'proyectos.db')
+    conn = sqlite3.connect(db_path)
+    
+    #conn = sqlite3.connect(':memory:') # para arrancar en Railway
+    #conn = sqlite3.connect(app.config['DATABASE_PATH']) # para arrancar en local original esto y el de abajo
     conn.row_factory = sqlite3.Row  # Para obtener diccionarios en lugar de tuplas
     return conn
 
